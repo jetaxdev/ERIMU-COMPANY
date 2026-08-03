@@ -1,0 +1,239 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  MANAGER
+  CUSTOMER
+}
+
+enum PropertyStatus {
+  AVAILABLE
+  RESERVED
+  SOLD
+  COMING_SOON
+}
+
+enum InquiryStatus {
+  NEW
+  CONTACTED
+  CLOSED
+}
+
+enum GalleryMediaType {
+  IMAGE
+  VIDEO
+}
+
+model User {
+  id           String        @id @default(uuid())
+  email        String        @unique
+  password     String
+  fullName     String?
+  role         Role          @default(CUSTOMER)
+  refreshToken String?
+  companyId    String?
+  company      Company?      @relation(fields: [companyId], references: [id])
+  properties   Property[]
+  inquiries    Inquiry[]
+  siteVisits   SiteVisit[]
+  activityLogs ActivityLog[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Company {
+  id           String        @id @default(uuid())
+  name         String
+  slug         String        @unique
+  description  String?
+  address      String?
+  phone        String?
+  email        String?
+  phones       String[]      @default([])
+  emails       String[]      @default([])
+  website      String?
+  logoUrl      String?
+  googleMapsUrl String?
+  mission      String?
+  vision       String?
+  about        String?
+  socialLinks  Json?
+  users        User[]
+  properties   Property[]
+  galleries    Gallery[]
+  blogs        Blog[]
+  faqs         Faq[]
+  testimonials Testimonial[]
+  inquiries    Inquiry[]
+  siteVisits   SiteVisit[]
+  activityLogs ActivityLog[]
+  settings     Settings[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Property {
+  id           String            @id @default(uuid())
+  title        String
+  slug         String            @unique
+  description  String?
+  price        Float?
+  location     String?
+  county       String?
+  town         String?
+  googleMapsUrl String?
+  latitude     Float?
+  longitude    Float?
+  bedrooms     Int?
+  bathrooms    Int?
+  areaSqft     Int?
+  plotSize     String?
+  type         String?
+  status       PropertyStatus    @default(COMING_SOON)
+  featured     Boolean           @default(false)
+  featuredImageId String?
+  featuredImage PropertyImage?   @relation("FeaturedPropertyImage", fields: [featuredImageId], references: [id], onDelete: SetNull)
+  companyId    String?
+  company      Company?          @relation(fields: [companyId], references: [id])
+  ownerId      String?
+  owner        User?             @relation(fields: [ownerId], references: [id])
+  images       PropertyImage[]   @relation("PropertyImages")
+  amenities    PropertyAmenity[]
+  inquiries    Inquiry[]
+  siteVisits   SiteVisit[]
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+}
+
+model PropertyImage {
+  id         String   @id @default(uuid())
+  propertyId String
+  property   Property @relation("PropertyImages", fields: [propertyId], references: [id], onDelete: Cascade)
+  featuredFor Property[] @relation("FeaturedPropertyImage")
+  url        String
+  caption    String?
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+}
+
+model PropertyAmenity {
+  id         String   @id @default(uuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  name       String
+  createdAt  DateTime @default(now())
+
+  @@unique([propertyId, name])
+}
+
+model Gallery {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  mediaType   GalleryMediaType @default(IMAGE)
+  category    String
+  description String?
+  mediaUrl    String
+  thumbnailUrl String?
+  duration    String?
+  sortOrder   Int      @default(0)
+  companyId   String?
+  company     Company? @relation(fields: [companyId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Blog {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  content     String?
+  published   Boolean  @default(false)
+  companyId   String?
+  company     Company? @relation(fields: [companyId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Faq {
+  id          String   @id @default(uuid())
+  question    String
+  answer      String
+  featured    Boolean  @default(false)
+  companyId   String?
+  company     Company? @relation(fields: [companyId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Testimonial {
+  id          String   @id @default(uuid())
+  name        String
+  role        String?
+  content     String
+  approved    Boolean  @default(false)
+  companyId   String?
+  company     Company? @relation(fields: [companyId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Inquiry {
+  id          String         @id @default(uuid())
+  fullName    String
+  email       String
+  phone       String?
+  message     String
+  status      InquiryStatus  @default(NEW)
+  propertyId  String?
+  property    Property?      @relation(fields: [propertyId], references: [id])
+  userId      String?
+  user        User?          @relation(fields: [userId], references: [id])
+  companyId   String?
+  company     Company?       @relation(fields: [companyId], references: [id])
+  createdAt   DateTime       @default(now())
+}
+
+model SiteVisit {
+  id          String   @id @default(uuid())
+  propertyId  String
+  property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  fullName    String?
+  email       String?
+  phone       String?
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id])
+  companyId   String?
+  company     Company? @relation(fields: [companyId], references: [id])
+  visitDate   DateTime @default(now())
+  notes       String?
+  createdAt   DateTime @default(now())
+}
+
+model ActivityLog {
+  id          String   @id @default(uuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id])
+  companyId   String?
+  company     Company? @relation(fields: [companyId], references: [id])
+  action      String
+  details     String?
+  createdAt   DateTime @default(now())
+}
+
+model Settings {
+  id          String   @id @default(uuid())
+  companyId   String?
+  company     Company? @relation(fields: [companyId], references: [id])
+  key         String
+  value       String
+  updatedAt   DateTime @updatedAt
+
+  @@unique([companyId, key])
+}

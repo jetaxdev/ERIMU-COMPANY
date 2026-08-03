@@ -1,0 +1,4 @@
+ALTER TABLE "SiteVisit"
+ADD COLUMN "fullName" TEXT,
+ADD COLUMN "email" TEXT,
+ADD COLUMN "phone" TEXT;
