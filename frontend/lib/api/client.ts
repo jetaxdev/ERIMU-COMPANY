@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-const backendBaseUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '') || '';
-
+// All requests go through Next.js rewrites → backend, so the auth cookie travels same-domain
 export const apiClient = axios.create({
-  baseURL: backendBaseUrl ? `${backendBaseUrl}/api/v1` : '/api',
+  baseURL: '/api',
   withCredentials: true,
 });
