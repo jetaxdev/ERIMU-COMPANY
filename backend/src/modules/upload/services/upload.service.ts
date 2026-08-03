@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CloudinaryService } from '../../../shared/cloudinary/cloudinary.service';
 
 @Injectable()
@@ -13,6 +13,10 @@ export class UploadService {
       overwrite?: boolean;
     },
   ) {
+    if (!file?.buffer?.length) {
+      throw new BadRequestException('A file is required for upload');
+    }
+
     const result = await this.cloudinaryService.uploadBuffer(file, {
       folder: options?.folder || 'erimu/uploads',
       publicId: options?.publicId,

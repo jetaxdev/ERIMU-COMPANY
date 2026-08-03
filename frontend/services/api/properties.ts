@@ -142,9 +142,7 @@ export async function addPropertyImage(
     formData.append('file', payload.file);
   }
 
-  const response = await apiClient.post<PropertyRecord>(`/properties/${propertyId}/images`, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
+  const response = await apiClient.post<PropertyRecord>(`/properties/${propertyId}/images`, formData);
 
   return response.data;
 }

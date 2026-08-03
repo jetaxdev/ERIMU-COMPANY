@@ -76,9 +76,7 @@ export async function uploadGalleryAsset(file: File) {
   const formData = new FormData();
   formData.append('file', file);
 
-  const response = await apiClient.post<UploadAssetResponse>('/uploads', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
+  const response = await apiClient.post<UploadAssetResponse>('/uploads', formData);
 
   return response.data;
 }
