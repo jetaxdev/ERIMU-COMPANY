@@ -28,6 +28,7 @@ import { BookSiteVisitButton } from '@/components/common/book-site-visit-button'
 import { MobileNavMenu } from '@/components/layout/mobile-nav-menu';
 import { SiteFooter } from '@/components/layout/site-footer';
 import { usePublicProperties } from '@/hooks/public/usePublicProperties';
+import { CompanyProfile, getCompanyProfile } from '@/services/api/company';
 import { GalleryRecord, getGallery } from '@/services/api/gallery';
 import type { PropertyRecord, PropertyStatus } from '@/services/api/properties';
 
@@ -36,6 +37,13 @@ const brandSerif = Cormorant_Garamond({ subsets: ['latin'], weight: ['600', '700
 
 const heroImage =
   'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80';
+
+const primaryContactPhone = '+254798426336';
+const primaryContactEmail = 'erimuventures@gmail.com';
+
+const fallbackPhones = ['+254 700 123 456', '+254 711 456 789'];
+const fallbackEmails = ['info@erimuventures.co.ke', 'sales@erimuventures.co.ke'];
+const fallbackAddress = 'KWFT Building, Kagio Town, Kirinyaga, Kenya';
 
 const services = [
   {
@@ -73,11 +81,10 @@ const highlights = [
 ];
 
 const stats = [
-  { value: '500+', label: 'Happy Clients', icon: Users2 },
-  { value: '1000+', label: 'Plots Sold', icon: Landmark },
-  { value: '10+', label: 'Strategic Locations', icon: Compass },
-  { value: '5+', label: 'Years Experience', icon: Sparkles },
-  { value: '100%', label: 'Customer Satisfaction', icon: CircleCheck },
+  { value: '500+', label: 'Plots Sold', note: 'and counting', icon: Users2 },
+  { value: '12+', label: 'Active Projects', note: 'Across Kenya', icon: Home },
+  { value: '1,200+', label: 'Happy Clients', note: 'Trusted by many', icon: Sparkles },
+  { value: '100%', label: 'Genuine Lands', note: 'Verified & Secure', icon: CircleCheck },
 ];
 
 const testimonials = [
@@ -158,6 +165,7 @@ function getStatusClass(status: PropertyStatus) {
 
 export default function HomePage() {
   const { data, loading } = usePublicProperties({ page: 1, limit: 100 });
+  const [company, setCompany] = useState<CompanyProfile | null>(null);
   const [galleryItems, setGalleryItems] = useState<GalleryRecord[]>([]);
   const [galleryLoading, setGalleryLoading] = useState(true);
   const [typedHeadline, setTypedHeadline] = useState('');
@@ -166,6 +174,22 @@ export default function HomePage() {
 
   useEffect(() => {
     let mounted = true;
+
+    getCompanyProfile()
+      .then((result) => {
+        if (!mounted) {
+          return;
+        }
+
+        setCompany(result);
+      })
+      .catch(() => {
+        if (!mounted) {
+          return;
+        }
+
+        setCompany(null);
+      });
 
     getGallery()
       .then((result) => {
@@ -239,6 +263,32 @@ export default function HomePage() {
     [homepageGalleryItems],
   );
 
+  const phones = useMemo(() => {
+    const values = company?.phones?.map((phone) => phone.trim()).filter(Boolean);
+    return values && values.length > 0 ? values : fallbackPhones;
+  }, [company?.phones]);
+
+  const emails = useMemo(() => {
+    const values = company?.emails?.map((email) => email.trim()).filter(Boolean);
+    return values && values.length > 0 ? values : fallbackEmails;
+  }, [company?.emails]);
+
+  const address = company?.address?.trim() || fallbackAddress;
+  const contactTickerItems = useMemo(
+    () => [
+      `Call us: ${primaryContactPhone}`,
+      `WhatsApp: ${primaryContactPhone}`,
+      `Email: ${primaryContactEmail}`,
+      `Visit us: ${address}`,
+      'Book a site visit today for guided property viewing',
+    ],
+    [address],
+  );
+  const scrollingContactItems = useMemo(
+    () => [...contactTickerItems, ...contactTickerItems],
+    [contactTickerItems],
+  );
+
   return (
     <main className={`${brandSans.variable} ${brandSerif.variable} bg-white font-[family-name:var(--font-home-sans)] text-slate-900`}>
       <header className="sticky top-0 z-50 border-b border-white/60 bg-white/90 backdrop-blur-xl">
@@ -293,24 +343,43 @@ export default function HomePage() {
         </div>
       </header>
 
-      <section className="relative overflow-hidden">
+      <section className="border-b border-slate-200/70 bg-slate-950 text-white">
+        <div className="mx-auto flex max-w-7xl items-center gap-3 overflow-hidden px-4 py-2.5 sm:px-6 lg:px-8">
+          <span className="shrink-0 rounded-full bg-red-600 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white">
+            Contact
+          </span>
+          <div className="min-w-0 flex-1 overflow-hidden">
+            <div className="home-contact-marquee-track flex w-max items-center gap-8 whitespace-nowrap text-sm text-white/82">
+              {scrollingContactItems.map((item, index) => (
+                <div key={`${item}-${index}`} className="flex items-center gap-8">
+                  <span>{item}</span>
+                  <span className="text-red-400">•</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative overflow-hidden bg-slate-950">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `linear-gradient(90deg, rgba(3,11,27,0.82) 0%, rgba(3,11,27,0.55) 45%, rgba(3,11,27,0.15) 100%), url(${heroImage})` }}
         />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.3),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(37,99,235,0.26),transparent_28%)]" />
 
-        <div className="relative mx-auto flex min-h-[520px] max-w-7xl flex-col justify-between px-4 py-5 sm:min-h-[760px] sm:px-6 sm:py-8 lg:min-h-[820px] lg:px-8 lg:py-10">
-          <div className="grid items-start gap-8 pt-5 sm:pt-10 lg:grid-cols-[1.08fr_0.92fr] lg:pt-14">
+        <div className="relative mx-auto flex min-h-[640px] max-w-7xl flex-col justify-between px-4 py-6 sm:min-h-[760px] sm:px-6 sm:py-8 lg:min-h-[780px] lg:px-8 lg:py-8">
+          <div className="grid items-center gap-10 pt-2 sm:pt-6 lg:grid-cols-[0.95fr_1.05fr] lg:pt-4">
             <div className="max-w-3xl text-white">
               <h1 className="max-w-2xl font-[family-name:var(--font-home-serif)] text-[2.35rem] font-bold leading-[0.92] tracking-[-0.04em] sm:text-6xl lg:text-[4.7rem]">
                 {typedHeadline.split('\n').map((line, index, lines) => (
-                  <span key={`${line}-${index}`} className="block min-h-[1em]">
+                  <span key={`${line}-${index}`} className="mt-4 block min-h-[1em] first:mt-0">
                     {line}
                     {index < lines.length - 1 ? null : <span className="animate-pulse text-red-400">|</span>}
                   </span>
                 ))}
               </h1>
+              <div className="mt-5 h-1 w-14 rounded-full bg-red-500" />
               <p className="mt-6 max-w-xl text-base leading-7 text-white/86 sm:text-lg">
                 Erimu Ventures Limited connects you with verified investment plots across Kenya. Transparent pricing, secure ownership, and exceptional customer service.
               </p>
@@ -323,6 +392,45 @@ export default function HomePage() {
                   Book a Site Visit <ArrowRight className="h-4 w-4" />
                 </BookSiteVisitButton>
               </div>
+            </div>
+
+            <div className="relative hidden min-h-[520px] items-center justify-center lg:flex">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.16),transparent_58%)]" />
+              <div className="relative">
+                <Image
+                  src="/titlestamp.png"
+                  alt="Government approved title deed stamp"
+                  width={768}
+                  height={768}
+                  className="h-auto w-[28rem] drop-shadow-[0_30px_80px_rgba(15,23,42,0.26)] xl:w-[32rem]"
+                  priority
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-8 rounded-[1.5rem] border border-white/14 bg-slate-900/55 p-3 text-white shadow-[0_22px_55px_rgba(0,0,0,0.18)] backdrop-blur-md sm:mt-10 sm:rounded-[1.75rem] sm:p-5">
+            <div className="grid grid-cols-2 gap-3 sm:gap-5 xl:grid-cols-4">
+              {stats.map((stat, index) => {
+                const Icon = stat.icon;
+                return (
+                  <div
+                    key={stat.label}
+                    className={`rounded-xl border border-white/12 bg-white/[0.03] p-3 text-center sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0 sm:text-left ${index < stats.length - 1 ? 'xl:border-r xl:border-white/14 xl:pr-5' : ''}`}
+                  >
+                    <div className="flex flex-col items-center gap-2 sm:flex-row sm:items-start sm:gap-4">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-600 text-white shadow-[0_10px_24px_rgba(220,38,38,0.24)] sm:h-12 sm:w-12">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="text-[1.6rem] font-bold leading-none tracking-[-0.03em] sm:text-[2rem]">{stat.value}</p>
+                      <p className="mt-1 text-sm font-semibold sm:mt-2 sm:text-base">{stat.label}</p>
+                      <p className="mt-1 text-xs text-white/70 sm:text-sm">{stat.note}</p>
+                    </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -453,6 +561,23 @@ export default function HomePage() {
         .home-gallery-marquee-track:hover {
           animation-play-state: paused;
         }
+
+        @keyframes home-contact-marquee {
+          from {
+            transform: translateX(0);
+          }
+          to {
+            transform: translateX(-50%);
+          }
+        }
+
+        .home-contact-marquee-track {
+          animation: home-contact-marquee 26s linear infinite;
+        }
+
+        .home-contact-marquee-track:hover {
+          animation-play-state: paused;
+        }
       `}</style>
 
       <section id="services" className="bg-white px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
@@ -476,25 +601,6 @@ export default function HomePage() {
               );
             })}
           </div>
-        </div>
-      </section>
-
-      <section className="bg-[linear-gradient(90deg,#0d1a4d_0%,#102e74_45%,#08153d_100%)] px-4 py-12 text-white sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-6 sm:grid-cols-2 xl:grid-cols-5">
-          {stats.map((stat) => {
-            const Icon = stat.icon;
-            return (
-              <div key={stat.label} className="flex items-center justify-center gap-4 rounded-2xl border border-white/10 bg-white/5 px-5 py-5 text-center backdrop-blur-sm">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white">
-                  <Icon className="h-5 w-5" />
-                </div>
-                <div className="text-left">
-                  <p className="text-2xl font-bold">{stat.value}</p>
-                  <p className="text-sm text-white/75">{stat.label}</p>
-                </div>
-              </div>
-            );
-          })}
         </div>
       </section>
 
