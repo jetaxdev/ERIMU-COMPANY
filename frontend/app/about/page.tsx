@@ -159,7 +159,7 @@ export default function AboutPage() {
               Through integrity, innovation, and exceptional customer service, we continue to be a trusted partner in land investment.
             </p>
 
-            <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-4">
+            <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-4">
               {values.map((value) => {
                 const Icon = value.icon;
                 return (

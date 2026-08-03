@@ -224,7 +224,7 @@ export default function PropertyDetailPage({ params }: DetailPageProps) {
               </button>
             </div>
 
-            <div className="mt-3 grid grid-cols-4 gap-2 sm:grid-cols-6">
+            <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-6">
               {gallery.map((url) => (
                 <button
                   key={url}
@@ -251,7 +251,7 @@ export default function PropertyDetailPage({ params }: DetailPageProps) {
             <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
               <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Starting From</p>
               <p className="mt-1 text-4xl font-bold text-red-600">{formatKES(property.price)}</p>
-              <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
+              <div className="mt-4 grid grid-cols-1 gap-3 text-sm sm:grid-cols-2 sm:gap-4">
                 <div>
                   <p className="text-slate-500">Plot Size</p>
                   <p className="font-semibold text-slate-800">{plotSize}</p>
