@@ -9,6 +9,7 @@ import {
   ChevronRight,
   Grid2x2,
   List,
+  Search,
   SlidersHorizontal,
 } from 'lucide-react';
 import { BookSiteVisitButton } from '@/components/common/book-site-visit-button';
@@ -139,13 +140,23 @@ export default function PublicPropertiesPage() {
       </header>
 
       <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div>
-          <h1 className="text-3xl font-bold tracking-[-0.03em] text-slate-900 sm:text-4xl">Properties</h1>
-          <div className="mt-2 flex items-center gap-2 text-sm text-slate-500">
-            <Link href="/" className="transition hover:text-red-600">Home</Link>
-            <span>›</span>
-            <span className="text-slate-700">Properties</span>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-[-0.03em] text-slate-900 sm:text-4xl">Properties</h1>
+            <div className="mt-2 flex items-center gap-2 text-sm text-slate-500">
+              <Link href="/" className="transition hover:text-red-600">Home</Link>
+              <span>›</span>
+              <span className="text-slate-700">Properties</span>
+            </div>
           </div>
+
+          <Link
+            href="/contact"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(29,78,216,0.22)] transition hover:bg-blue-800 sm:w-auto"
+          >
+            <Search className="h-4 w-4" />
+            Search Properties
+          </Link>
         </div>
       </section>
 
