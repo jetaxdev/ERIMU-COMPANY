@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, CalendarDays } from 'lucide-react';
+import { ContactTickerBar } from '@/components/layout/contact-ticker-bar';
 import { createSiteVisit } from '@/services/api/site-visits';
 import { getProperties, PropertyRecord } from '@/services/api/properties';
 
@@ -109,6 +110,8 @@ export default function BookSiteVisitPage() {
           </Link>
         </div>
       </header>
+
+      <ContactTickerBar />
 
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_16px_36px_rgba(15,23,42,0.08)] sm:p-8">

@@ -16,6 +16,7 @@ import {
   Video,
 } from 'lucide-react';
 import { BookSiteVisitButton } from '@/components/common/book-site-visit-button';
+import { ContactTickerBar } from '@/components/layout/contact-ticker-bar';
 import { MobileNavMenu } from '@/components/layout/mobile-nav-menu';
 import { SiteFooter } from '@/components/layout/site-footer';
 import { GalleryRecord, getGallery } from '@/services/api/gallery';
@@ -126,6 +127,8 @@ export default function GalleryPage() {
           <MobileNavMenu currentPath="/gallery" />
         </div>
       </header>
+
+      <ContactTickerBar />
 
       <section className="relative overflow-hidden">
         <div

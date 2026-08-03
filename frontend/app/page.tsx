@@ -25,10 +25,10 @@ import {
   Wallet,
 } from 'lucide-react';
 import { BookSiteVisitButton } from '@/components/common/book-site-visit-button';
+import { ContactTickerBar } from '@/components/layout/contact-ticker-bar';
 import { MobileNavMenu } from '@/components/layout/mobile-nav-menu';
 import { SiteFooter } from '@/components/layout/site-footer';
 import { usePublicProperties } from '@/hooks/public/usePublicProperties';
-import { CompanyProfile, getCompanyProfile } from '@/services/api/company';
 import { GalleryRecord, getGallery } from '@/services/api/gallery';
 import type { PropertyRecord, PropertyStatus } from '@/services/api/properties';
 
@@ -37,13 +37,6 @@ const brandSerif = Cormorant_Garamond({ subsets: ['latin'], weight: ['600', '700
 
 const heroImage =
   'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80';
-
-const primaryContactPhone = '+254798426336';
-const primaryContactEmail = 'erimuventures@gmail.com';
-
-const fallbackPhones = ['+254 700 123 456', '+254 711 456 789'];
-const fallbackEmails = ['info@erimuventures.co.ke', 'sales@erimuventures.co.ke'];
-const fallbackAddress = 'KWFT Building, Kagio Town, Kirinyaga, Kenya';
 
 const services = [
   {
@@ -165,7 +158,6 @@ function getStatusClass(status: PropertyStatus) {
 
 export default function HomePage() {
   const { data, loading } = usePublicProperties({ page: 1, limit: 100 });
-  const [company, setCompany] = useState<CompanyProfile | null>(null);
   const [galleryItems, setGalleryItems] = useState<GalleryRecord[]>([]);
   const [galleryLoading, setGalleryLoading] = useState(true);
   const [typedHeadline, setTypedHeadline] = useState('');
@@ -174,22 +166,6 @@ export default function HomePage() {
 
   useEffect(() => {
     let mounted = true;
-
-    getCompanyProfile()
-      .then((result) => {
-        if (!mounted) {
-          return;
-        }
-
-        setCompany(result);
-      })
-      .catch(() => {
-        if (!mounted) {
-          return;
-        }
-
-        setCompany(null);
-      });
 
     getGallery()
       .then((result) => {
@@ -263,32 +239,6 @@ export default function HomePage() {
     [homepageGalleryItems],
   );
 
-  const phones = useMemo(() => {
-    const values = company?.phones?.map((phone) => phone.trim()).filter(Boolean);
-    return values && values.length > 0 ? values : fallbackPhones;
-  }, [company?.phones]);
-
-  const emails = useMemo(() => {
-    const values = company?.emails?.map((email) => email.trim()).filter(Boolean);
-    return values && values.length > 0 ? values : fallbackEmails;
-  }, [company?.emails]);
-
-  const address = company?.address?.trim() || fallbackAddress;
-  const contactTickerItems = useMemo(
-    () => [
-      `Call us: ${primaryContactPhone}`,
-      `WhatsApp: ${primaryContactPhone}`,
-      `Email: ${primaryContactEmail}`,
-      `Visit us: ${address}`,
-      'Book a site visit today for guided property viewing',
-    ],
-    [address],
-  );
-  const scrollingContactItems = useMemo(
-    () => [...contactTickerItems, ...contactTickerItems],
-    [contactTickerItems],
-  );
-
   return (
     <main className={`${brandSans.variable} ${brandSerif.variable} bg-white font-[family-name:var(--font-home-sans)] text-slate-900`}>
       <header className="sticky top-0 z-50 border-b border-white/60 bg-white/90 backdrop-blur-xl">
@@ -343,23 +293,7 @@ export default function HomePage() {
         </div>
       </header>
 
-      <section className="border-b border-slate-200/70 bg-slate-950 text-white">
-        <div className="mx-auto flex max-w-7xl items-center gap-3 overflow-hidden px-4 py-2.5 sm:px-6 lg:px-8">
-          <span className="shrink-0 rounded-full bg-red-600 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-white">
-            Contact
-          </span>
-          <div className="min-w-0 flex-1 overflow-hidden">
-            <div className="home-contact-marquee-track flex w-max items-center gap-8 whitespace-nowrap text-sm text-white/82">
-              {scrollingContactItems.map((item, index) => (
-                <div key={`${item}-${index}`} className="flex items-center gap-8">
-                  <span>{item}</span>
-                  <span className="text-red-400">•</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <ContactTickerBar />
 
       <section className="relative overflow-hidden bg-slate-950">
         <div
@@ -369,8 +303,8 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.3),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(37,99,235,0.26),transparent_28%)]" />
 
         <div className="relative mx-auto flex min-h-[640px] max-w-7xl flex-col justify-between px-4 py-6 sm:min-h-[760px] sm:px-6 sm:py-8 lg:min-h-[780px] lg:px-8 lg:py-8">
-          <div className="grid items-center gap-10 pt-2 sm:pt-6 lg:grid-cols-[0.95fr_1.05fr] lg:pt-4">
-            <div className="max-w-3xl text-white">
+          <div className="grid items-center gap-10 pt-1 sm:pt-4 lg:grid-cols-[0.95fr_1.05fr] lg:pt-1">
+            <div className="max-w-3xl text-white lg:-mt-10">
               <h1 className="max-w-2xl font-[family-name:var(--font-home-serif)] text-[2.35rem] font-bold leading-[0.92] tracking-[-0.04em] sm:text-6xl lg:text-[4.7rem]">
                 {typedHeadline.split('\n').map((line, index, lines) => (
                   <span key={`${line}-${index}`} className="mt-4 block min-h-[1em] first:mt-0">
@@ -562,22 +496,6 @@ export default function HomePage() {
           animation-play-state: paused;
         }
 
-        @keyframes home-contact-marquee {
-          from {
-            transform: translateX(0);
-          }
-          to {
-            transform: translateX(-50%);
-          }
-        }
-
-        .home-contact-marquee-track {
-          animation: home-contact-marquee 26s linear infinite;
-        }
-
-        .home-contact-marquee-track:hover {
-          animation-play-state: paused;
-        }
       `}</style>
 
       <section id="services" className="bg-white px-4 py-14 sm:px-6 sm:py-20 lg:px-8">

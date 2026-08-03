@@ -18,6 +18,7 @@ import {
   Users2,
 } from 'lucide-react';
 import { BookSiteVisitButton } from '@/components/common/book-site-visit-button';
+import { ContactTickerBar } from '@/components/layout/contact-ticker-bar';
 import { MobileNavMenu } from '@/components/layout/mobile-nav-menu';
 import { SiteFooter } from '@/components/layout/site-footer';
 
@@ -108,6 +109,8 @@ export default function AboutPage() {
           <MobileNavMenu currentPath="/about" />
         </div>
       </header>
+
+      <ContactTickerBar />
 
       {/* ── HERO ── */}
       <section className="relative min-h-[420px] overflow-hidden sm:min-h-[520px]">

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { CalendarDays, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
+import { ContactTickerBar } from '@/components/layout/contact-ticker-bar';
 import { MobileNavMenu } from '@/components/layout/mobile-nav-menu';
 import { getProperties, getPropertyBySlug, PropertyRecord, PropertyStatus } from '@/services/api/properties';
 import { createSiteVisit } from '@/services/api/site-visits';
@@ -187,6 +188,8 @@ export default function PropertyDetailPage({ params }: DetailPageProps) {
         </div>
       </header>
 
+      <ContactTickerBar />
+
       <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="mb-4 flex items-center gap-2 text-sm text-slate-500">
           <Link href="/" className="hover:text-red-600">Home</Link>
@@ -283,7 +286,7 @@ export default function PropertyDetailPage({ params }: DetailPageProps) {
                 Book Site Visit
               </button>
               <a
-                href={`https://wa.me/?text=${encodeURIComponent(`Hello, I am interested in ${property.title}`)}`}
+                href={`https://wa.me/254798426336?text=${encodeURIComponent(`Hello, I am interested in ${property.title}`)}`}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex w-full items-center justify-center rounded-md border border-emerald-400 px-4 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50"

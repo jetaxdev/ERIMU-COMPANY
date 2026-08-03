@@ -13,6 +13,7 @@ import {
   SlidersHorizontal,
 } from 'lucide-react';
 import { BookSiteVisitButton } from '@/components/common/book-site-visit-button';
+import { ContactTickerBar } from '@/components/layout/contact-ticker-bar';
 import { MobileNavMenu } from '@/components/layout/mobile-nav-menu';
 import { SiteFooter } from '@/components/layout/site-footer';
 import { PropertyCard } from '@/components/property/property-card';
@@ -157,6 +158,8 @@ export default function PublicPropertiesPage() {
           <MobileNavMenu currentPath="/properties" />
         </div>
       </header>
+
+      <ContactTickerBar />
 
       <section className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
