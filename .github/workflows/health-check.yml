@@ -8,6 +8,7 @@ on:
 jobs:
   ping-backend:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Ping backend health endpoint
         env:
@@ -18,4 +19,10 @@ jobs:
             exit 1
           fi
 
-          curl --fail --silent --show-error --max-time 30 "$BACKEND_HEALTHCHECK_URL"
+          curl --fail --silent --show-error \
+            --connect-timeout 10 \
+            --max-time 90 \
+            --retry 5 \
+            --retry-all-errors \
+            --retry-delay 10 \
+            "$BACKEND_HEALTHCHECK_URL"
