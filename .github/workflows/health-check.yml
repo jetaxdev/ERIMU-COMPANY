@@ -1,0 +1,21 @@
+name: Health Check
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping backend health endpoint
+        env:
+          BACKEND_HEALTHCHECK_URL: ${{ secrets.BACKEND_HEALTHCHECK_URL }}
+        run: |
+          if [ -z "$BACKEND_HEALTHCHECK_URL" ]; then
+            echo "BACKEND_HEALTHCHECK_URL is not set"
+            exit 1
+          fi
+
+          curl --fail --silent --show-error --max-time 30 "$BACKEND_HEALTHCHECK_URL"
