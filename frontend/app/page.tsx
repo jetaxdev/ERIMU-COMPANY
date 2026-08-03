@@ -283,9 +283,6 @@ export default function HomePage() {
         <div className="relative mx-auto flex min-h-[820px] max-w-7xl flex-col justify-between px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
           <div className="grid items-start gap-10 pt-10 lg:grid-cols-[1.08fr_0.92fr] lg:pt-14">
             <div className="max-w-3xl text-white">
-              <p className="mb-5 inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.3em] text-white/80">
-                Own land with confidence
-              </p>
               <h1 className="max-w-2xl font-[family-name:var(--font-home-serif)] text-5xl font-bold leading-[0.92] tracking-[-0.04em] sm:text-6xl lg:text-[4.7rem]">
                 Own Prime Land
                 <br />
@@ -302,25 +299,6 @@ export default function HomePage() {
                 <BookSiteVisitButton className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(37,99,235,0.3)] transition hover:bg-blue-700">
                   Book a Site Visit <ArrowRight className="h-4 w-4" />
                 </BookSiteVisitButton>
-              </div>
-            </div>
-
-            <div className="hidden self-end lg:block">
-              <div className="rounded-[1.75rem] border border-white/15 bg-white/10 p-5 shadow-[0_22px_50px_rgba(0,0,0,0.26)] backdrop-blur-xl">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {highlights.map((item) => {
-                    const Icon = item.icon;
-                    return (
-                      <div key={item.label} className="rounded-2xl border border-white/10 bg-black/15 p-4 text-white shadow-inner shadow-white/5">
-                        <div className="mb-3 inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-white">
-                          <Icon className="h-5 w-5" />
-                        </div>
-                        <p className="text-sm font-semibold">{item.label}</p>
-                        <p className="mt-1 text-xs leading-5 text-white/75">{item.description}</p>
-                      </div>
-                    );
-                  })}
-                </div>
               </div>
             </div>
           </div>
