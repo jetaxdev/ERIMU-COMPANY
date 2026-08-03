@@ -29,7 +29,7 @@
 
 1. Add a GitHub repository secret named `BACKEND_HEALTHCHECK_URL`.
 2. Set it to the full backend health URL, for example `https://your-backend-service.onrender.com/health`.
-3. The scheduled workflow in `.github/workflows/health-check.yml` will ping that URL every 10 minutes.
+3. The scheduled workflow in `.github/workflows/health-check.yml` will ping that URL every 10 minutes and retry up to 3 times if the backend is slow to respond.
 
 ## 4. Post-deploy checks
 
