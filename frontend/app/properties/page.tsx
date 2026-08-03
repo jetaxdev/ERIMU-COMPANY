@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   CalendarDays,
   ChevronLeft,
@@ -82,8 +82,19 @@ function deriveSize(property: ListingProperty, index: number) {
 
 export default function PublicPropertiesPage() {
   const { data, loading, error } = usePublicProperties({ page: 1, limit: 100 });
+  const [search, setSearch] = useState('');
+  const [searchOpen, setSearchOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (searchOpen) searchInputRef.current?.focus();
+  }, [searchOpen]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [search]);
 
   const listings = useMemo<ListingProperty[]>(() => {
     return data.map((property) => ({
@@ -97,7 +108,15 @@ export default function PublicPropertiesPage() {
     }));
   }, [data]);
 
-  const filteredListings = listings;
+  const filteredListings = useMemo(() => {
+    if (!search.trim()) return listings;
+    const term = search.toLowerCase();
+    return listings.filter((p) =>
+      [p.title, p.location, p.county, p.town]
+        .filter(Boolean)
+        .some((v) => String(v).toLowerCase().includes(term)),
+    );
+  }, [listings, search]);
 
   const perPage = 12;
   const totalPages = Math.max(1, Math.ceil(filteredListings.length / perPage));
@@ -150,19 +169,34 @@ export default function PublicPropertiesPage() {
             </div>
           </div>
 
-          <Link
-            href="/contact"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(29,78,216,0.22)] transition hover:bg-blue-800 sm:w-auto"
-          >
-            <Search className="h-4 w-4" />
-            Search Properties
-          </Link>
+          <div className="flex w-full items-center gap-2 sm:w-auto">
+            {searchOpen && (
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search by name or location…"
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm text-slate-800 shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 sm:w-64"
+              />
+            )}
+            <button
+              type="button"
+              onClick={() => { setSearchOpen((v) => !v); if (searchOpen) setSearch(''); }}
+              className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(29,78,216,0.22)] transition hover:bg-blue-800 sm:w-auto"
+            >
+              <Search className="h-4 w-4" />
+              {searchOpen ? 'Close' : 'Search Properties'}
+            </button>
+          </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm font-semibold text-slate-700">Total Properties: {listings.length}</p>
+          <p className="text-sm font-semibold text-slate-700">
+            {search.trim() ? `${filteredListings.length} result${filteredListings.length !== 1 ? 's' : ''} for "${search}"` : `Total Properties: ${listings.length}`}
+          </p>
           <div className="inline-flex rounded-xl border border-slate-200 bg-white p-1 shadow-sm">
             <button type="button" onClick={() => setViewMode('grid')} className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition ${viewMode === 'grid' ? 'bg-red-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}>
               <Grid2x2 className="h-4 w-4" />
