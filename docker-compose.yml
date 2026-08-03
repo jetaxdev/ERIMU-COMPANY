@@ -18,18 +18,10 @@ services:
       context: ./backend
     container_name: erimu-backend
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
-      DATABASE_URL: 'postgresql://postgres:@Aidan2030@localhost:5432/ERIMU-COMPANY'
-      JWT_SECRET: 'ym4foMgrQg13/tnGXVLbyNkr6ObW2uKHX0WfurGZHdJSKYRYkHf8h2SqqIqfT1hzX1qTZSfJu4+07HJw8NDgVA=='
-      JWT_REFRESH_SECRET: 'u1eUImy1nk5iHMwf09+ZANlwJ+rc/IQva464FZCJiDByU3x6tWQnd71jltmpvWujMes+30fBuqfpwxXdOUp4WQ=='
-      JWT_EXPIRES_IN: '1h'
-      CLOUDINARY_CLOUD_NAME: 'hh1mm8j2'
-      CLOUDINARY_API_KEY: '575245369942743'
-      CLOUDINARY_API_SECRET: 'Wvyu8CiFYIBna0pii2_RxEeNwJ0'
-      RESEND_API_KEY: 'demo'
-      FRONTEND_URL: 'http://localhost:3000'
       NODE_ENV: 'production'
-      PORT: '3001'
     ports:
       - "3001:3001"
     depends_on:
@@ -39,11 +31,11 @@ services:
     build:
       context: ./frontend
       args:
-        NEXT_PUBLIC_API_URL: 'http://localhost:3001'
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001}
     container_name: erimu-frontend
     restart: unless-stopped
     environment:
-      NEXT_PUBLIC_API_URL: 'http://localhost:3001'
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:3001}
     ports:
       - "3000:3000"
     depends_on:
