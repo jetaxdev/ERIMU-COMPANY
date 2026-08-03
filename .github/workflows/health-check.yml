@@ -18,4 +18,16 @@ jobs:
             exit 1
           fi
 
-          curl --fail --silent --show-error --max-time 30 "$BACKEND_HEALTHCHECK_URL"
+          for attempt in 1 2 3; do
+            if curl --fail --silent --show-error --max-time 30 "$BACKEND_HEALTHCHECK_URL"; then
+              exit 0
+            fi
+
+            if [ "$attempt" -lt 3 ]; then
+              echo "Health check attempt $attempt failed, retrying in 15 seconds..."
+              sleep 15
+            fi
+          done
+
+          echo "Health check failed after 3 attempts"
+          exit 1
