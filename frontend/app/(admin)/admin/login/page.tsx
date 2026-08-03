@@ -58,11 +58,17 @@ export default function AdminLoginPage() {
 		setErrors({});
 
 		try {
-			await apiClient.post('/auth/login', {
-				email: email.trim().toLowerCase(),
-				password,
-				rememberMe,
+			const res = await fetch('/api/auth/login', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					email: email.trim().toLowerCase(),
+					password,
+					rememberMe,
+				}),
 			});
+
+			if (!res.ok) throw new Error('Login failed');
 
 			router.push('/admin/dashboard');
 			router.refresh();

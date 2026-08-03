@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const authCookieName = 'erimu_access_token';
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
+const backendBaseUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001').replace(/\/$/, '');
 
 async function hasValidAdminSession(request: NextRequest): Promise<boolean> {
   const token = request.cookies.get(authCookieName)?.value;
@@ -11,7 +11,7 @@ async function hasValidAdminSession(request: NextRequest): Promise<boolean> {
   }
 
   try {
-    const response = await fetch(`${apiBaseUrl}/auth/me`, {
+    const response = await fetch(`${backendBaseUrl}/api/v1/auth/me`, {
       method: 'GET',
       headers: {
         cookie: `${authCookieName}=${token}`,
