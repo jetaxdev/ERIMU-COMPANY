@@ -2,14 +2,13 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   CalendarDays,
   ChevronLeft,
   ChevronRight,
   Grid2x2,
   List,
-  Search,
   SlidersHorizontal,
 } from 'lucide-react';
 import { BookSiteVisitButton } from '@/components/common/book-site-visit-button';
@@ -25,17 +24,6 @@ type ListingProperty = PropertyRecord & {
 
 const heroImage =
   'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80';
-
-const statusOptions: Array<{ label: string; value: 'ALL' | PropertyStatus }> = [
-  { label: 'All Status', value: 'ALL' },
-  { label: 'Available', value: 'AVAILABLE' },
-  { label: 'Sold', value: 'SOLD' },
-  { label: 'Reserved', value: 'RESERVED' },
-  { label: 'Coming Soon', value: 'COMING_SOON' },
-];
-
-const propertyTypes = ['All Types', 'Residential', 'Commercial', 'Mixed Use'];
-const sizes = ['All Sizes', '50 x 100', '40 x 80', '60 x 100', '100 x 100'];
 
 function formatKES(price: number | null | undefined) {
   if (!price) return 'Contact for price';
@@ -93,21 +81,8 @@ function deriveSize(property: ListingProperty, index: number) {
 
 export default function PublicPropertiesPage() {
   const { data, loading, error } = usePublicProperties({ page: 1, limit: 100 });
-  const searchInputRef = useRef<HTMLInputElement>(null);
-  const [search, setSearch] = useState('');
-  const [status, setStatus] = useState<'ALL' | PropertyStatus>('ALL');
-  const [county, setCounty] = useState('All Locations');
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
-  const [type, setType] = useState('All Types');
-  const [size, setSize] = useState('All Sizes');
-  const [sortBy, setSortBy] = useState('Latest First');
   const [page, setPage] = useState(1);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-
-  useEffect(() => {
-    setPage(1);
-  }, [search, status, county, minPrice, maxPrice, type, size, sortBy, viewMode]);
 
   const listings = useMemo<ListingProperty[]>(() => {
     return data.map((property) => ({
@@ -121,65 +96,7 @@ export default function PublicPropertiesPage() {
     }));
   }, [data]);
 
-  const counties = useMemo(
-    () => ['All Locations', ...Array.from(new Set(listings.map((item) => item.county).filter((item): item is string => Boolean(item))))],
-    [listings],
-  );
-
-  const filteredListings = useMemo(() => {
-    let result = [...listings];
-
-    if (search.trim()) {
-      const term = search.toLowerCase();
-      result = result.filter((property) => {
-        return [property.title, property.location, property.county, property.town, property.description, property.type]
-          .filter(Boolean)
-          .some((value) => String(value).toLowerCase().includes(term));
-      });
-    }
-
-    if (status !== 'ALL') {
-      result = result.filter((property) => property.status === status);
-    }
-
-    if (county !== 'All Locations') {
-      result = result.filter((property) => property.county === county || property.location === county);
-    }
-
-    if (type !== 'All Types') {
-      result = result.filter((property) => (property.type || 'Residential') === type);
-    }
-
-    if (size !== 'All Sizes') {
-      result = result.filter((property, index) => deriveSize(property, index) === size);
-    }
-
-    const min = minPrice ? Number(minPrice) : undefined;
-    const max = maxPrice ? Number(maxPrice) : undefined;
-
-    if (min !== undefined) {
-      result = result.filter((property) => (property.price ?? 0) >= min);
-    }
-
-    if (max !== undefined) {
-      result = result.filter((property) => (property.price ?? 0) <= max);
-    }
-
-    result.sort((left, right) => {
-      switch (sortBy) {
-        case 'Price Low to High':
-          return (left.price ?? 0) - (right.price ?? 0);
-        case 'Price High to Low':
-          return (right.price ?? 0) - (left.price ?? 0);
-        case 'Name A-Z':
-          return left.title.localeCompare(right.title);
-        default:
-          return right.title.localeCompare(left.title);
-      }
-    });
-
-    return result;
-  }, [listings, search, status, county, type, size, minPrice, maxPrice, sortBy]);
+  const filteredListings = listings;
 
   const perPage = 12;
   const totalPages = Math.max(1, Math.ceil(filteredListings.length / perPage));
@@ -187,11 +104,6 @@ export default function PublicPropertiesPage() {
   const pageWindowEnd = Math.min(totalPages, pageWindowStart + 4);
   const visiblePageNumbers = Array.from({ length: pageWindowEnd - pageWindowStart + 1 }, (_, index) => pageWindowStart + index);
   const paginatedListings = filteredListings.slice((page - 1) * perPage, page * perPage);
-
-  const handleSearchButtonClick = () => {
-    searchInputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    searchInputRef.current?.focus();
-  };
 
   return (
     <main className="bg-[radial-gradient(circle_at_top,#ffffff_0%,#f4f7fb_45%,#eef3f9_100%)] text-slate-900">
@@ -227,135 +139,19 @@ export default function PublicPropertiesPage() {
       </header>
 
       <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-[-0.03em] text-slate-900 sm:text-4xl">Properties</h1>
-            <div className="mt-2 flex items-center gap-2 text-sm text-slate-500">
-              <Link href="/" className="transition hover:text-red-600">Home</Link>
-              <span>›</span>
-              <span className="text-slate-700">Properties</span>
-            </div>
+        <div>
+          <h1 className="text-3xl font-bold tracking-[-0.03em] text-slate-900 sm:text-4xl">Properties</h1>
+          <div className="mt-2 flex items-center gap-2 text-sm text-slate-500">
+            <Link href="/" className="transition hover:text-red-600">Home</Link>
+            <span>›</span>
+            <span className="text-slate-700">Properties</span>
           </div>
-
-          <button
-            type="button"
-            onClick={handleSearchButtonClick}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-700 px-5 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_rgba(29,78,216,0.22)] transition hover:bg-blue-800 sm:w-auto"
-          >
-            <Search className="h-4 w-4" />
-            Search Properties
-          </button>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
-        <div className="mb-5 grid gap-3 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:grid-cols-2 xl:grid-cols-4">
-          <input
-            ref={searchInputRef}
-            type="text"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search by title, location or county"
-            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 sm:col-span-2 xl:col-span-2"
-          />
-
-          <select
-            value={status}
-            onChange={(event) => setStatus(event.target.value as 'ALL' | PropertyStatus)}
-            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-          >
-            {statusOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-
-          <select
-            value={county}
-            onChange={(event) => setCounty(event.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-          >
-            {counties.map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
-
-          <select
-            value={type}
-            onChange={(event) => setType(event.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-          >
-            {propertyTypes.map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
-
-          <select
-            value={size}
-            onChange={(event) => setSize(event.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-          >
-            {sizes.map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
-
-          <input
-            type="number"
-            min="0"
-            value={minPrice}
-            onChange={(event) => setMinPrice(event.target.value)}
-            placeholder="Min price"
-            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-          />
-
-          <input
-            type="number"
-            min="0"
-            value={maxPrice}
-            onChange={(event) => setMaxPrice(event.target.value)}
-            placeholder="Max price"
-            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-800 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-          />
-
-          <select
-            value={sortBy}
-            onChange={(event) => setSortBy(event.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-          >
-            <option value="Latest First">Latest First</option>
-            <option value="Price Low to High">Price Low to High</option>
-            <option value="Price High to Low">Price High to Low</option>
-            <option value="Name A-Z">Name A-Z</option>
-          </select>
-
-          <button
-            type="button"
-            onClick={() => {
-              setSearch('');
-              setStatus('ALL');
-              setCounty('All Locations');
-              setMinPrice('');
-              setMaxPrice('');
-              setType('All Types');
-              setSize('All Sizes');
-              setSortBy('Latest First');
-            }}
-            className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
-          >
-            Reset Filters
-          </button>
-        </div>
-
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm font-semibold text-slate-700">Total Properties: {filteredListings.length}</p>
+          <p className="text-sm font-semibold text-slate-700">Total Properties: {listings.length}</p>
           <div className="inline-flex rounded-xl border border-slate-200 bg-white p-1 shadow-sm">
             <button type="button" onClick={() => setViewMode('grid')} className={`inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold transition ${viewMode === 'grid' ? 'bg-red-600 text-white' : 'text-slate-600 hover:bg-slate-100'}`}>
               <Grid2x2 className="h-4 w-4" />
@@ -406,10 +202,10 @@ export default function PublicPropertiesPage() {
           })}
         </div>
 
-        {filteredListings.length === 0 ? (
+        {listings.length === 0 && !loading ? (
           <div className="mt-8 rounded-[1.75rem] border border-slate-200 bg-white p-10 text-center shadow-sm">
-            <p className="text-lg font-semibold text-slate-900">No properties matched your filters.</p>
-            <p className="mt-2 text-sm text-slate-500">Try resetting the filters to see the full collection again.</p>
+            <p className="text-lg font-semibold text-slate-900">No properties available yet.</p>
+            <p className="mt-2 text-sm text-slate-500">Check back soon for new listings.</p>
           </div>
         ) : null}
 
