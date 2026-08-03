@@ -128,14 +128,14 @@ export default function PublicPropertiesPage() {
   return (
     <main className="bg-[radial-gradient(circle_at_top,#ffffff_0%,#f4f7fb_45%,#eef3f9_100%)] text-slate-900">
       <header className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 sm:py-3 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
             <Image
               src="/erimuventures%20logo%20updated.png"
               alt="Erimu Ventures"
               width={140}
               height={48}
-              className="h-12 w-auto object-contain"
+              className="h-10 w-auto object-contain sm:h-12"
               priority
             />
           </Link>
@@ -158,10 +158,10 @@ export default function PublicPropertiesPage() {
         </div>
       </header>
 
-      <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="text-3xl font-bold tracking-[-0.03em] text-slate-900 sm:text-4xl">Properties</h1>
+            <h1 className="text-[1.75rem] font-bold tracking-[-0.03em] text-slate-900 sm:text-4xl">Properties</h1>
             <div className="mt-2 flex items-center gap-2 text-sm text-slate-500">
               <Link href="/" className="transition hover:text-red-600">Home</Link>
               <span>›</span>
@@ -287,7 +287,7 @@ export default function PublicPropertiesPage() {
         </div>
       </section>
 
-      <section id="contact" className="mx-auto max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
+      <section id="contact" className="mx-auto max-w-7xl px-4 pb-6 sm:px-6 sm:pb-8 lg:px-8">
         <div className="grid gap-6 rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-[0_16px_36px_rgba(15,23,42,0.08)] lg:grid-cols-[0.9fr_1.1fr_auto] lg:items-center">
           <div className="flex items-center gap-4">
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-700">

@@ -154,14 +154,14 @@ export default function PropertyDetailPage({ params }: DetailPageProps) {
   return (
     <main className="bg-white text-slate-900">
       <header className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/95 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 sm:py-3 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
             <Image
               src="/erimuventures%20logo%20updated.png"
               alt="Erimu Ventures"
               width={140}
               height={48}
-              className="h-12 w-auto object-contain"
+              className="h-10 w-auto object-contain sm:h-12"
               priority
             />
           </Link>
@@ -196,9 +196,9 @@ export default function PropertyDetailPage({ params }: DetailPageProps) {
           <span className="text-red-600">{property.title}</span>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[1.55fr_0.95fr]">
+        <div className="grid gap-5 lg:grid-cols-[1.55fr_0.95fr]">
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="relative h-[360px] overflow-hidden rounded-xl bg-slate-100 sm:h-[460px]">
+            <div className="relative h-[270px] overflow-hidden rounded-xl bg-slate-100 sm:h-[460px]">
               <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${activeImage || pickImage(property)})` }} />
               <button
                 type="button"
@@ -242,7 +242,7 @@ export default function PropertyDetailPage({ params }: DetailPageProps) {
             <span className={`inline-flex rounded-md px-2 py-1 text-xs font-bold text-white ${statusClass(property.status)}`}>
               {pretty(property.status)}
             </span>
-            <h1 className="mt-3 text-4xl font-bold tracking-[-0.03em] text-slate-900">{property.title}</h1>
+            <h1 className="mt-3 text-[2.05rem] font-bold tracking-[-0.03em] text-slate-900 sm:text-4xl">{property.title}</h1>
             <p className="mt-2 inline-flex items-center gap-2 text-sm text-slate-500">
               <MapPin className="h-4 w-4" />
               {location}
@@ -250,7 +250,7 @@ export default function PropertyDetailPage({ params }: DetailPageProps) {
 
             <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
               <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Starting From</p>
-              <p className="mt-1 text-4xl font-bold text-red-600">{formatKES(property.price)}</p>
+              <p className="mt-1 text-3xl font-bold text-red-600 sm:text-4xl">{formatKES(property.price)}</p>
               <div className="mt-4 grid grid-cols-1 gap-3 text-sm sm:grid-cols-2 sm:gap-4">
                 <div>
                   <p className="text-slate-500">Plot Size</p>

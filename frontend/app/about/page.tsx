@@ -77,14 +77,14 @@ export default function AboutPage() {
     <main className="bg-white text-slate-900">
       {/* ── NAVBAR ── */}
       <header className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 sm:py-3 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
             <Image
               src="/erimuventures%20logo%20updated.png"
               alt="Erimu Ventures"
               width={140}
               height={48}
-              className="h-12 w-auto object-contain"
+              className="h-10 w-auto object-contain sm:h-12"
               priority
             />
           </Link>
@@ -110,7 +110,7 @@ export default function AboutPage() {
       </header>
 
       {/* ── HERO ── */}
-      <section className="relative min-h-[520px] overflow-hidden">
+      <section className="relative min-h-[420px] overflow-hidden sm:min-h-[520px]">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -118,7 +118,7 @@ export default function AboutPage() {
           }}
         />
 
-        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-20 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
+        <div className="relative mx-auto grid max-w-7xl items-center gap-8 px-4 py-14 sm:px-6 sm:py-20 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
           <div className="text-white">
             <h1 className="max-w-2xl text-4xl font-extrabold leading-tight tracking-[-0.03em] sm:text-5xl lg:text-[3.2rem]">
               Building More Than Properties,{' '}
@@ -137,7 +137,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── OUR STORY ── */}
-      <section className="px-4 py-20 sm:px-6 lg:px-8">
+      <section className="px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2">
           <div className="overflow-hidden rounded-2xl shadow-[0_20px_50px_rgba(15,23,42,0.14)]">
             <Image
@@ -197,7 +197,7 @@ export default function AboutPage() {
       </section>
 
       {/* ── MISSION + VISION + WHY CHOOSE US ── */}
-      <section className="px-4 py-20 sm:px-6 lg:px-8">
+      <section className="px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-3">
           {/* Mission */}
           <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-[0_14px_34px_rgba(15,23,42,0.07)]">

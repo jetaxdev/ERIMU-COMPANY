@@ -71,14 +71,14 @@ export default function TestimonialsPage() {
   return (
     <main className="bg-white text-slate-900">
       <header className="sticky top-0 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 sm:py-3 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
             <Image
               src="/erimuventures%20logo%20updated.png"
               alt="Erimu Ventures"
               width={140}
               height={48}
-              className="h-12 w-auto object-contain"
+              className="h-10 w-auto object-contain sm:h-12"
               priority
             />
           </Link>
@@ -108,7 +108,7 @@ export default function TestimonialsPage() {
         />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(250,204,21,0.15),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.13),transparent_35%)]" />
 
-        <div className="relative mx-auto min-h-[470px] max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <div className="relative mx-auto min-h-[390px] max-w-7xl px-4 py-8 sm:min-h-[470px] sm:px-6 sm:py-10 lg:px-8 lg:py-14">
           <div className="grid items-end gap-8 lg:grid-cols-[0.95fr_1.05fr]">
             <div className="max-w-xl">
               <p className="text-xs font-bold uppercase tracking-[0.32em] text-red-600">Testimonials</p>
@@ -136,7 +136,7 @@ export default function TestimonialsPage() {
         </div>
       </section>
 
-      <section className="px-4 py-16 sm:px-6 lg:px-8">
+      <section className="px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="relative">
             <button

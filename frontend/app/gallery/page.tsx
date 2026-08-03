@@ -97,14 +97,14 @@ export default function GalleryPage() {
   return (
     <main className="bg-white text-slate-900">
       <header className="sticky top-0 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 sm:py-3 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
             <Image
               src="/erimuventures%20logo%20updated.png"
               alt="Erimu Ventures"
               width={140}
               height={48}
-              className="h-12 w-auto object-contain"
+              className="h-10 w-auto object-contain sm:h-12"
               priority
             />
           </Link>
@@ -134,11 +134,11 @@ export default function GalleryPage() {
         />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.14),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(250,204,21,0.13),transparent_35%)]" />
 
-        <div className="relative mx-auto min-h-[460px] max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <div className="relative mx-auto min-h-[390px] max-w-7xl px-4 py-8 sm:min-h-[460px] sm:px-6 sm:py-10 lg:px-8 lg:py-14">
           <div className="flex items-center">
             <div className="max-w-2xl">
               <p className="text-xs font-bold uppercase tracking-[0.32em] text-red-600">Gallery</p>
-              <h1 className="mt-4 font-[family-name:var(--font-home-serif)] text-5xl font-bold leading-[0.95] tracking-[-0.04em] text-slate-900 sm:text-6xl lg:text-[4.7rem]">
+              <h1 className="mt-4 font-[family-name:var(--font-home-serif)] text-[2.35rem] font-bold leading-[0.95] tracking-[-0.04em] text-slate-900 sm:text-6xl lg:text-[4.7rem]">
                 Explore Our Property
                 <br />
                 <span className="text-red-600">Gallery</span>
@@ -250,7 +250,7 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      <section className="px-4 pb-16 sm:px-6 lg:px-8">
+      <section className="px-4 pb-12 sm:px-6 sm:pb-16 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-5 shadow-[0_14px_34px_rgba(15,23,42,0.06)] lg:grid-cols-[1.2fr_auto_auto] lg:items-center">
           <div className="flex items-center gap-4">
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-red-600 shadow-sm">

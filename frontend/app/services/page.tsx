@@ -157,14 +157,14 @@ export default function ServicesPage() {
   return (
     <main className="bg-white text-slate-900">
       <header className="sticky top-0 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 sm:py-3 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
             <Image
               src="/erimuventures%20logo%20updated.png"
               alt="Erimu Ventures"
               width={140}
               height={48}
-              className="h-12 w-auto object-contain"
+              className="h-10 w-auto object-contain sm:h-12"
               priority
             />
           </Link>
@@ -194,11 +194,11 @@ export default function ServicesPage() {
         />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(250,204,21,0.14),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(37,99,235,0.12),transparent_28%)]" />
 
-        <div className="relative mx-auto min-h-[560px] max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+        <div className="relative mx-auto min-h-[440px] max-w-7xl px-4 py-8 sm:min-h-[560px] sm:px-6 sm:py-10 lg:px-8 lg:py-14">
           <div className="flex items-center">
             <div className="max-w-2xl">
               <p className="text-xs font-bold uppercase tracking-[0.32em] text-red-600">Our Services</p>
-              <h1 className="mt-4 font-[family-name:var(--font-home-serif)] text-4xl font-bold leading-[0.98] tracking-[-0.04em] text-slate-900 sm:text-6xl lg:text-[4.75rem]">
+              <h1 className="mt-4 font-[family-name:var(--font-home-serif)] text-[2.35rem] font-bold leading-[0.98] tracking-[-0.04em] text-slate-900 sm:text-6xl lg:text-[4.75rem]">
                 Making Land Ownership
                 <br />
                 Simple, <span className="text-red-600">Secure &amp; Affordable</span>
@@ -220,7 +220,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="px-4 py-20 sm:px-6 lg:px-8">
+      <section className="px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <p className="text-xs font-bold uppercase tracking-[0.32em] text-red-600">What We Offer</p>
@@ -244,7 +244,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="bg-slate-50 px-4 py-20 sm:px-6 lg:px-8">
+      <section className="bg-slate-50 px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <p className="text-xs font-bold uppercase tracking-[0.32em] text-red-600">Why Choose Us</p>
@@ -268,7 +268,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <section className="px-4 py-20 sm:px-6 lg:px-8">
+      <section className="px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <p className="text-xs font-bold uppercase tracking-[0.32em] text-red-600">How It Works</p>

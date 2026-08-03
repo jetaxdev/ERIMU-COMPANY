@@ -160,6 +160,9 @@ export default function HomePage() {
   const { data, loading } = usePublicProperties({ page: 1, limit: 100 });
   const [galleryItems, setGalleryItems] = useState<GalleryRecord[]>([]);
   const [galleryLoading, setGalleryLoading] = useState(true);
+  const [typedHeadline, setTypedHeadline] = useState('');
+
+  const headlineText = 'Own Prime Land\nWith Confidence';
 
   useEffect(() => {
     let mounted = true;
@@ -186,6 +189,23 @@ export default function HomePage() {
       mounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    let index = 0;
+
+    const timer = window.setInterval(() => {
+      index += 1;
+      setTypedHeadline(headlineText.slice(0, index));
+
+      if (index >= headlineText.length) {
+        window.clearInterval(timer);
+      }
+    }, 55);
+
+    return () => {
+      window.clearInterval(timer);
+    };
+  }, [headlineText]);
 
   const featuredProperties = data
     .slice()
@@ -222,14 +242,14 @@ export default function HomePage() {
   return (
     <main className={`${brandSans.variable} ${brandSerif.variable} bg-white font-[family-name:var(--font-home-sans)] text-slate-900`}>
       <header className="sticky top-0 z-50 border-b border-white/60 bg-white/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 sm:py-3 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
             <Image
               src="/erimuventures%20logo%20updated.png"
               alt="Erimu Ventures"
               width={140}
               height={50}
-              className="h-12 w-auto object-contain"
+              className="h-10 w-auto object-contain sm:h-12"
               priority
             />
           </Link>
@@ -280,19 +300,22 @@ export default function HomePage() {
         />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(251,191,36,0.3),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(37,99,235,0.26),transparent_28%)]" />
 
-        <div className="relative mx-auto flex min-h-[820px] max-w-7xl flex-col justify-between px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-          <div className="grid items-start gap-10 pt-10 lg:grid-cols-[1.08fr_0.92fr] lg:pt-14">
+        <div className="relative mx-auto flex min-h-[520px] max-w-7xl flex-col justify-between px-4 py-5 sm:min-h-[760px] sm:px-6 sm:py-8 lg:min-h-[820px] lg:px-8 lg:py-10">
+          <div className="grid items-start gap-8 pt-5 sm:pt-10 lg:grid-cols-[1.08fr_0.92fr] lg:pt-14">
             <div className="max-w-3xl text-white">
-              <h1 className="max-w-2xl font-[family-name:var(--font-home-serif)] text-5xl font-bold leading-[0.92] tracking-[-0.04em] sm:text-6xl lg:text-[4.7rem]">
-                Own Prime Land
-                <br />
-                With Confidence
+              <h1 className="max-w-2xl font-[family-name:var(--font-home-serif)] text-[2.35rem] font-bold leading-[0.92] tracking-[-0.04em] sm:text-6xl lg:text-[4.7rem]">
+                {typedHeadline.split('\n').map((line, index, lines) => (
+                  <span key={`${line}-${index}`} className="block min-h-[1em]">
+                    {line}
+                    {index < lines.length - 1 ? null : <span className="animate-pulse text-red-400">|</span>}
+                  </span>
+                ))}
               </h1>
               <p className="mt-6 max-w-xl text-base leading-7 text-white/86 sm:text-lg">
                 Erimu Ventures Limited connects you with verified investment plots across Kenya. Transparent pricing, secure ownership, and exceptional customer service.
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-4">
+              <div className="mt-7 flex flex-wrap gap-3 sm:mt-8 sm:gap-4">
                 <Link href="#properties" className="inline-flex items-center gap-2 rounded-full bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(220,38,38,0.34)] transition hover:bg-red-700">
                   View Available Plots <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -303,28 +326,10 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="mt-14 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {highlights.map((item) => {
-              const Icon = item.icon;
-              return (
-                <div key={item.label} className="rounded-2xl border border-white/12 bg-black/60 px-5 py-4 text-white shadow-[0_18px_36px_rgba(0,0,0,0.18)] backdrop-blur-xl">
-                  <div className="flex items-start gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-white">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">{item.label}</p>
-                      <p className="mt-1 text-sm leading-6 text-white/75">{item.description}</p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
         </div>
       </section>
 
-      <section id="properties" className="bg-white px-4 py-20 sm:px-6 lg:px-8">
+      <section id="properties" className="bg-white px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <p className="text-xs font-bold uppercase tracking-[0.32em] text-red-600">Featured Properties</p>
@@ -391,7 +396,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="gallery" className="bg-white px-4 py-20 sm:px-6 lg:px-8">
+      <section id="gallery" className="bg-white px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <p className="text-xs font-bold uppercase tracking-[0.32em] text-red-600">Gallery</p>
@@ -450,7 +455,7 @@ export default function HomePage() {
         }
       `}</style>
 
-      <section id="services" className="bg-white px-4 py-20 sm:px-6 lg:px-8">
+      <section id="services" className="bg-white px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <p className="text-xs font-bold uppercase tracking-[0.32em] text-red-600">Our Services</p>
@@ -493,7 +498,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="testimonials" className="bg-white px-4 py-20 sm:px-6 lg:px-8">
+      <section id="testimonials" className="bg-white px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <p className="text-xs font-bold uppercase tracking-[0.32em] text-red-600">Testimonials</p>
@@ -522,7 +527,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-slate-50 px-4 py-20 sm:px-6 lg:px-8">
+      <section className="bg-slate-50 px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <p className="text-xs font-bold uppercase tracking-[0.32em] text-red-600">Our Process</p>
@@ -548,7 +553,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="about" className="px-4 py-20 sm:px-6 lg:px-8">
+      <section id="about" className="px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-6 overflow-hidden rounded-[2rem] bg-[linear-gradient(90deg,#11328a_0%,#244fb7_48%,#0a1126_100%)] text-white lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-5 px-8 py-10 lg:px-10 lg:py-12">
             <h2 className="text-3xl font-semibold tracking-[-0.03em]">Ready to Invest in Your Future?</h2>

@@ -145,14 +145,14 @@ export default function ContactPage() {
   return (
     <main className="bg-white text-slate-900">
       <header className="sticky top-0 z-50 border-b border-slate-200/60 bg-white/90 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 sm:py-3 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
             <Image
               src="/erimuventures%20logo%20updated.png"
               alt="Erimu Ventures"
               width={140}
               height={48}
-              className="h-12 w-auto object-contain"
+              className="h-10 w-auto object-contain sm:h-12"
               priority
             />
           </Link>
@@ -184,11 +184,11 @@ export default function ContactPage() {
         />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.14),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(250,204,21,0.12),transparent_34%)]" />
 
-        <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <div className="relative mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
           <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
             <div className="max-w-xl">
               <p className="text-xs font-bold uppercase tracking-[0.32em] text-red-600">Contact Us</p>
-              <h1 className="mt-4 font-[family-name:var(--font-home-serif)] text-5xl font-bold leading-[0.95] tracking-[-0.04em] text-slate-900 sm:text-6xl lg:text-[4.5rem]">
+              <h1 className="mt-4 font-[family-name:var(--font-home-serif)] text-[2.35rem] font-bold leading-[0.95] tracking-[-0.04em] text-slate-900 sm:text-6xl lg:text-[4.5rem]">
                 We Are Here
                 <br />
                 To Help You
@@ -231,7 +231,7 @@ export default function ContactPage() {
             </div>
 
             <div className="rounded-2xl border border-white/70 bg-white/95 p-6 shadow-[0_24px_56px_rgba(15,23,42,0.15)] backdrop-blur-sm sm:p-7">
-              <h2 className="text-4xl font-semibold tracking-[-0.03em] text-slate-900">Send Us a Message</h2>
+              <h2 className="text-3xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-4xl">Send Us a Message</h2>
               <p className="mt-2 text-sm leading-6 text-slate-600">Fill in the form below and we will get back to you as soon as possible.</p>
 
               <form id="contact-form" onSubmit={handleSendMessage} className="mt-6 space-y-4">
@@ -293,7 +293,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="px-4 py-12 sm:px-6 lg:px-8">
+      <section className="px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {supportCards.map((item) => {
             const Icon = item.icon;
@@ -311,7 +311,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section className="px-4 pb-12 sm:px-6 lg:px-8">
+      <section className="px-4 pb-10 sm:px-6 sm:pb-12 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-6">
             <p className="text-xs font-bold uppercase tracking-[0.32em] text-red-600">Get In Touch</p>
