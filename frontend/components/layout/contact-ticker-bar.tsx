@@ -12,6 +12,8 @@ export function ContactTickerBar() {
 
   const contactTickerItems = useMemo(
     () => [
+      { text: `TikTok: @erimulandltd`, href: 'https://www.tiktok.com/@erimulandltd' },
+      { text: 'Facebook: Erimu Ventures', href: 'https://www.facebook.com/erimuventures' },
       { text: `Call us: ${primaryContactPhone}` },
       { text: `WhatsApp: ${primaryContactPhone}`, href: whatsappLink },
       { text: `Email: ${primaryContactEmail}` },
