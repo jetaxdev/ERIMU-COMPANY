@@ -2,7 +2,7 @@
 
 import { MessageCircle } from 'lucide-react';
 
-const whatsappLink = `https://wa.me/254798426336?text=${encodeURIComponent('Hello Erimu Ventures, I would like more details about your properties.')}`;
+const whatsappLink = `https://wa.me/254798426336?text=${encodeURIComponent('Hello Erimu Land Ltd, I would like more details about your properties.')}`;
 
 export function FloatingWhatsAppButton() {
   return (

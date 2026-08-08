@@ -178,8 +178,8 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
               <div className={`flex items-center gap-3 ${showCollapsedSidebar ? 'lg:flex-col lg:gap-2' : ''}`}>
                 <div className="rounded-2xl border border-amber-100/15 bg-white/10 p-1.5 backdrop-blur-xl">
                   <Image
-                    src={showCollapsedSidebar ? '/erimu-mark.svg' : '/erimuventures%20logo%20updated.png'}
-                    alt="Erimu Ventures"
+                    src={showCollapsedSidebar ? '/erimu-mark.svg' : '/erimuland%20logo.png'}
+                    alt="Erimu Land Ltd"
                     width={showCollapsedSidebar ? 30 : 120}
                     height={showCollapsedSidebar ? 30 : 38}
                     className={showCollapsedSidebar ? 'h-7 w-7' : 'h-auto w-28'}

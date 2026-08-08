@@ -3,8 +3,8 @@ import { FloatingWhatsAppButton } from '@/components/common/floating-whatsapp-bu
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'ERIMU Company',
-  description: 'Modern property and real-estate platform',
+  title: 'ERIMU Land Ltd',
+  description: 'Best land selling company in Kirinyaga County.Try us today',
   icons: {
     icon: '/favicon.png',
     shortcut: '/favicon.png',

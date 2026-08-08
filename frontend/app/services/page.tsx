@@ -161,8 +161,8 @@ export default function ServicesPage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 sm:py-3 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/erimuventures%20logo%20updated.png"
-              alt="Erimu Ventures"
+              src="/erimuland%20logo.png"
+              alt="Erimu Land Ltd"
               width={140}
               height={48}
               className="h-10 w-auto object-contain sm:h-12"
@@ -251,7 +251,7 @@ export default function ServicesPage() {
         <div className="mx-auto max-w-7xl">
           <div className="text-center">
             <p className="text-xs font-bold uppercase tracking-[0.32em] text-red-600">Why Choose Us</p>
-            <h2 className="mt-3 font-[family-name:var(--font-home-serif)] text-4xl font-bold tracking-[-0.03em] text-slate-900 sm:text-5xl">Why Choose Erimu Ventures</h2>
+            <h2 className="mt-3 font-[family-name:var(--font-home-serif)] text-4xl font-bold tracking-[-0.03em] text-slate-900 sm:text-5xl">Why Choose Erimu Land Ltd</h2>
           </div>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 sm:gap-6 xl:grid-cols-4">

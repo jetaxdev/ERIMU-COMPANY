@@ -8,7 +8,7 @@ const primaryContactEmail = 'erimuventures@gmail.com';
 const primaryAddress = 'KWFT Building, Kagio Town, Kirinyaga, Kenya';
 
 export function ContactTickerBar() {
-  const whatsappLink = `https://wa.me/254798426336?text=${encodeURIComponent('Hello Erimu Ventures, I would like more details about your properties.')}`;
+  const whatsappLink = `https://wa.me/254798426336?text=${encodeURIComponent('Hello Erimu Land Ltd, I would like more details about your properties.')}`;
 
   const contactTickerItems = useMemo(
     () => [

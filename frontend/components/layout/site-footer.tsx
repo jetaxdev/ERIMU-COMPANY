@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 import { CompanyProfile, getCompanyProfile } from '@/services/api/company';
 
-const fallbackName = 'Erimu Ventures Ltd';
+const fallbackName = 'Erimu Land Ltd';
 const fallbackAbout =
   'We connect you with verified investment plots across Kenya. Transparent pricing, secure ownership, and exceptional customer service.';
 const fallbackAddress = 'Kimatthi House, 5th Floor, Kimathi Street, Nairobi, Kenya';
@@ -63,7 +63,7 @@ export function SiteFooter() {
       <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.1fr_0.8fr_0.8fr_1fr]">
         <div>
           <Image
-            src="/erimuventures%20logo%20updated.png"
+            src="/erimuland%20logo.png"
             alt={companyName}
             width={150}
             height={56}

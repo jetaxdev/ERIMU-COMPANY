@@ -177,7 +177,7 @@ export default function AdminLoginPage() {
 				</form>
 
 				<footer className="mt-4 border-t border-[#e1e9fb] pt-3 text-center text-[11px] text-[#6a82ae]">
-					© 2026 Erimu Ventures Ltd. All rights reserved.
+					© 2026 Erimu Land Ltd. All rights reserved.
 				</footer>
 			</section>
 		</main>
@@ -188,8 +188,8 @@ function LogoBlock({ compact = false }: { compact?: boolean }) {
 	return (
 		<div className="flex items-center justify-center gap-3">
 			<Image
-				src="/erimuventures%20logo%20updated.png"
-				alt="Erimu Ventures logo"
+				src="/erimuland%20logo.png"
+				alt="Erimu Land Ltd logo"
 				width={280}
 				height={72}
 				className={compact ? 'h-auto w-24 sm:w-28' : 'h-auto w-52 xl:w-60'}

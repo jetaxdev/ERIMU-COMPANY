@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Cormorant_Garamond, Manrope } from 'next/font/google';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowRight,
   BadgeCheck,
@@ -82,7 +82,7 @@ const stats = [
 
 const testimonials = [
   {
-    quote: 'Erimu Ventures made my land buying experience smooth and stress-free. The team is professional and trustworthy.',
+    quote: 'Erimu Land Ltd made my land buying experience smooth and stress-free. The team is professional and trustworthy.',
     author: 'John Mwangi',
     place: 'Nairobi',
   },
@@ -210,7 +210,6 @@ export default function HomePage() {
   const featuredProperties = data
     .slice()
     .sort((left, right) => Number(right.featured) - Number(left.featured))
-    .slice(0, 4)
     .map((property: PropertyRecord) => {
       const preferredImage =
         (property.featuredImageId
@@ -239,14 +238,39 @@ export default function HomePage() {
     [homepageGalleryItems],
   );
 
+  const carouselRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = carouselRef.current;
+    if (!el || featuredProperties.length === 0) return;
+
+    let index = 0;
+    const len = featuredProperties.length;
+
+    const scrollToIndex = (i: number) => {
+      const child = el.children[i] as HTMLElement | undefined;
+      if (!child) return;
+      // center the child in the scroll viewport where possible
+      const left = Math.max(0, child.offsetLeft - (el.clientWidth - child.clientWidth) / 2);
+      el.scrollTo({ left, behavior: 'smooth' });
+    };
+
+    const id = window.setInterval(() => {
+      index = (index + 1) % len;
+      scrollToIndex(index);
+    }, 3500);
+
+    return () => window.clearInterval(id);
+  }, [featuredProperties]);
+
   return (
     <main className={`${brandSans.variable} ${brandSerif.variable} bg-white font-[family-name:var(--font-home-sans)] text-slate-900`}>
       <header className="sticky top-0 z-50 border-b border-white/60 bg-white/90 backdrop-blur-xl">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 sm:py-3 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/erimuventures%20logo%20updated.png"
-              alt="Erimu Ventures"
+              src="/erimuland%20logo.png"
+              alt="Erimu Land Ltd"
               width={140}
               height={50}
               className="h-10 w-auto object-contain sm:h-12"
@@ -315,11 +339,11 @@ export default function HomePage() {
               </h1>
               <div className="mt-5 h-1 w-14 rounded-full bg-red-500" />
               <p className="mt-6 max-w-xl text-base leading-7 text-white/86 sm:text-lg">
-                Erimu Ventures Limited connects you with verified investment plots across Kenya. Transparent pricing, secure ownership, and exceptional customer service.
+                Erimu Land Ltd connects you with verified investment plots across Kenya. Transparent pricing, secure ownership, and exceptional customer service.
               </p>
 
               <div className="mt-7 flex flex-wrap gap-3 sm:mt-8 sm:gap-4">
-                <Link href="#properties" className="inline-flex items-center gap-2 rounded-full bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(220,38,38,0.34)] transition hover:bg-red-700">
+                <Link href="/properties" className="inline-flex items-center gap-2 rounded-full bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(220,38,38,0.34)] transition hover:bg-red-700">
                   View Available Plots <ArrowRight className="h-4 w-4" />
                 </Link>
                 <BookSiteVisitButton className="inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(37,99,235,0.3)] transition hover:bg-blue-700">
@@ -328,19 +352,7 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="relative hidden min-h-[520px] items-center justify-center lg:flex">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.16),transparent_58%)]" />
-              <div className="relative">
-                <Image
-                  src="/titlestamp.png"
-                  alt="Government approved title deed stamp"
-                  width={768}
-                  height={768}
-                  className="h-auto w-[28rem] drop-shadow-[0_30px_80px_rgba(15,23,42,0.26)] xl:w-[32rem]"
-                  priority
-                />
-              </div>
-            </div>
+            <div className="min-h-[160px] lg:min-h-[520px]" />
           </div>
 
           <div className="mt-8 rounded-[1.5rem] border border-white/14 bg-slate-900/55 p-3 text-white shadow-[0_22px_55px_rgba(0,0,0,0.18)] backdrop-blur-md sm:mt-10 sm:rounded-[1.75rem] sm:p-5">
@@ -383,51 +395,56 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {featuredProperties.map((property) => (
-              <article key={property.id} className="group overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)] transition hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(15,23,42,0.12)]">
-                <div className="relative h-56 overflow-hidden">
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transition duration-700 group-hover:scale-105"
-                    style={{
-                      backgroundImage: `linear-gradient(180deg, rgba(15,23,42,0.12), rgba(15,23,42,0.36)), url(${property.featuredImage})`,
-                    }}
-                  />
-                  <span className={`absolute left-3 top-3 rounded-md px-3 py-1 text-[11px] font-bold text-white ${getStatusClass(property.status)}`}>
-                    {statusLabel(property.status)}
-                  </span>
-                  <button type="button" className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-slate-500 shadow-sm transition hover:text-red-600">
-                    <Heart className="h-4 w-4" />
-                  </button>
-                </div>
-                <div className="space-y-3 p-5">
-                  <div>
-                    <h3 className="text-lg font-semibold text-slate-900">{property.title}</h3>
-                    <div className="mt-1 flex items-center gap-2 text-sm text-slate-500">
-                      <MapPin className="h-4 w-4" />
-                      <span>{property.location || property.county || 'Prime location'}</span>
+          <div className="mt-10">
+            <div ref={carouselRef} className="no-scrollbar flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory px-2 py-2">
+              {featuredProperties.map((property) => (
+                <article
+                  key={property.id}
+                  className="snap-center flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 group overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white shadow-[0_18px_45px_rgba(15,23,42,0.08)] transition hover:-translate-y-1 hover:shadow-[0_24px_60px_rgba(15,23,42,0.12)]"
+                >
+                  <div className="relative h-64 overflow-hidden">
+                    <div
+                      className="absolute inset-0 bg-cover bg-center transition duration-700 group-hover:scale-105"
+                      style={{
+                        backgroundImage: `linear-gradient(180deg, rgba(15,23,42,0.12), rgba(15,23,42,0.36)), url(${property.featuredImage})`,
+                      }}
+                    />
+                    <span className={`absolute left-3 top-3 rounded-md px-3 py-1 text-[11px] font-bold text-white ${getStatusClass(property.status)}`}>
+                      {statusLabel(property.status)}
+                    </span>
+                    <button type="button" className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-slate-500 shadow-sm transition hover:text-red-600">
+                      <Heart className="h-4 w-4" />
+                    </button>
+                  </div>
+                  <div className="space-y-3 p-5">
+                    <div>
+                      <h3 className="text-lg font-semibold text-slate-900">{property.title}</h3>
+                      <div className="mt-1 flex items-center gap-2 text-sm text-slate-500">
+                        <MapPin className="h-4 w-4" />
+                        <span>{property.location || property.county || 'Prime location'}</span>
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="flex items-center gap-3 text-sm text-slate-600">
-                    <span className="inline-flex items-center gap-1">
-                      <BadgeCheck className="h-4 w-4 text-slate-400" />
-                      {property.size}
-                    </span>
-                    <span className="inline-flex items-center gap-1">
-                      <Star className="h-4 w-4 text-amber-400" />
-                      Verified
-                    </span>
-                  </div>
+                    <div className="flex items-center gap-3 text-sm text-slate-600">
+                      <span className="inline-flex items-center gap-1">
+                        <BadgeCheck className="h-4 w-4 text-slate-400" />
+                        {property.size}
+                      </span>
+                      <span className="inline-flex items-center gap-1">
+                        <Star className="h-4 w-4 text-amber-400" />
+                        Verified
+                      </span>
+                    </div>
 
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-600">{property.highlight}</p>
-                  <p className="text-xl font-bold text-blue-700">{formatPrice(property.price)}</p>
-                  <Link href={`/properties/${property.slug}`} className="inline-flex items-center gap-2 text-sm font-semibold text-red-600 transition hover:text-red-700">
-                    View Details <ArrowRight className="h-4 w-4" />
-                  </Link>
-                </div>
-              </article>
-            ))}
+                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-600">{property.highlight}</p>
+                    <p className="text-xl font-bold text-blue-700">{formatPrice(property.price)}</p>
+                    <Link href={`/properties/${property.slug}`} className="inline-flex items-center gap-2 text-sm font-semibold text-red-600 transition hover:text-red-700">
+                      View Details <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
 
           {!loading && featuredProperties.length === 0 ? (
@@ -494,6 +511,15 @@ export default function HomePage() {
 
         .home-gallery-marquee-track:hover {
           animation-play-state: paused;
+        }
+
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
         }
 
       `}</style>

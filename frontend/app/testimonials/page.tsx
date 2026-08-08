@@ -32,7 +32,7 @@ const testimonialCards: Testimonial[] = [
     location: 'Nairobi, Kenya',
     role: 'Verified Buyer',
     quote:
-      'Erimu Ventures made the entire process of buying land so simple and transparent. The team was professional and the property is exactly as they described.',
+      'Erimu Land Ltd made the entire process of buying land so simple and transparent. The team was professional and the property is exactly as they described.',
     profileImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
   },
   {
@@ -40,7 +40,7 @@ const testimonialCards: Testimonial[] = [
     location: 'Machakos, Kenya',
     role: 'Verified Buyer',
     quote:
-      'The site visit experience was amazing. I got to see the land, ask questions and make an informed decision. I highly recommend Erimu Ventures.',
+      'The site visit experience was amazing. I got to see the land, ask questions and make an informed decision. I highly recommend Erimu Land Ltd.',
     profileImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80',
   },
   {
@@ -56,7 +56,7 @@ const testimonialCards: Testimonial[] = [
     location: 'Nakuru, Kenya',
     role: 'Verified Buyer',
     quote:
-      'Affordable payment plans made it possible for me to own land without financial strain. Thank you Erimu Ventures for making my dream a reality!',
+      'Affordable payment plans made it possible for me to own land without financial strain. Thank you Erimu Land Ltd for making my dream a reality!',
     profileImage: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=300&q=80',
   },
 ];
@@ -75,8 +75,8 @@ export default function TestimonialsPage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 sm:py-3 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/erimuventures%20logo%20updated.png"
-              alt="Erimu Ventures"
+              src="/erimuland%20logo.png"
+              alt="Erimu Land Ltd"
               width={140}
               height={48}
               className="h-10 w-auto object-contain sm:h-12"
@@ -206,7 +206,7 @@ export default function TestimonialsPage() {
               <Quote className="h-7 w-7" />
             </div>
             <div>
-              <h3 className="text-2xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-3xl">Thousands of Kenyans Trust Erimu Ventures</h3>
+              <h3 className="text-2xl font-semibold tracking-[-0.03em] text-slate-900 sm:text-3xl">Thousands of Kenyans Trust Erimu Land Ltd</h3>
               <p className="mt-1 text-sm leading-6 text-slate-600">We are committed to providing genuine, affordable and secure land ownership opportunities across Kenya.</p>
             </div>
           </div>

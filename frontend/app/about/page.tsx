@@ -81,8 +81,8 @@ export default function AboutPage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 sm:py-3 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/erimuventures%20logo%20updated.png"
-              alt="Erimu Ventures"
+              src="/erimuland%20logo.png"
+              alt="Erimu Land Ltd"
               width={140}
               height={48}
               className="h-10 w-auto object-contain sm:h-12"
@@ -128,7 +128,7 @@ export default function AboutPage() {
               <span className="text-red-500">We Build<br />Trust &amp; Futures</span>
             </h1>
             <p className="mt-5 max-w-xl text-base leading-7 text-white/82">
-              Erimu Ventures Ltd is a land investment company committed to providing genuine, affordable, and high-value land opportunities across Kenya.
+              Erimu Land Ltd is a land investment company committed to providing genuine, affordable, and high-value land opportunities across Kenya.
             </p>
             <BookSiteVisitButton
               className="mt-7 inline-flex items-center gap-2 rounded-full bg-red-600 px-6 py-3 text-sm font-semibold text-white shadow-[0_14px_30px_rgba(220,38,38,0.34)] transition hover:bg-red-700"
@@ -145,7 +145,7 @@ export default function AboutPage() {
           <div className="overflow-hidden rounded-2xl shadow-[0_20px_50px_rgba(15,23,42,0.14)]">
             <Image
               src={officeImage}
-              alt="Erimu Ventures Office"
+              alt="Erimu Land Ltd Office"
               width={900}
               height={600}
               className="h-80 w-full object-cover lg:h-[420px]"
@@ -156,7 +156,7 @@ export default function AboutPage() {
             <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-red-600">Our Story</p>
             <h2 className="text-3xl font-extrabold tracking-[-0.03em] text-slate-900 sm:text-4xl">Our Journey So Far</h2>
             <p className="mt-4 text-sm leading-7 text-slate-600">
-              Erimu Ventures Ltd was founded with a simple goal — to make land ownership in Kenya accessible, transparent, and stress-free. We understand the dreams people have for their families, and we are here to turn those dreams into reality.
+              Erimu Land Ltd was founded with a simple goal — to make land ownership in Kenya accessible, transparent, and stress-free. We understand the dreams people have for their families, and we are here to turn those dreams into reality.
             </p>
             <p className="mt-3 text-sm leading-7 text-slate-600">
               Through integrity, innovation, and exceptional customer service, we continue to be a trusted partner in land investment.
@@ -249,8 +249,8 @@ export default function AboutPage() {
           {/* Why choose us */}
           <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-[0_14px_34px_rgba(15,23,42,0.07)]">
             <p className="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-red-600">Why Choose Us</p>
-            <h2 className="text-2xl font-extrabold tracking-[-0.03em] text-slate-900 sm:text-3xl">
-              The Erimu Ventures Advantage
+              <h2 className="text-2xl font-extrabold tracking-[-0.03em] text-slate-900 sm:text-3xl">
+                The Erimu Land Ltd Advantage
             </h2>
             <div className="mt-6 space-y-4">
               {advantages.map((item) => {
