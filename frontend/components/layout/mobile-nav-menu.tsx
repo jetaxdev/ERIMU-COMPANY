@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
@@ -87,15 +88,21 @@ export function MobileNavMenu({ currentPath }: MobileNavMenuProps) {
 
           <aside
             id="public-mobile-nav-drawer"
-            className="absolute right-0 top-0 ml-auto flex h-[100dvh] w-[min(82vw,20rem)] flex-col overflow-hidden border-l border-slate-200 bg-white text-slate-900 shadow-[-18px_0_40px_rgba(15,23,42,0.18)] sm:w-[22rem]"
+            className="absolute right-0 top-0 z-[91] ml-auto flex h-[100dvh] w-[min(82vw,20rem)] flex-col overflow-hidden border-l border-slate-200 bg-white text-slate-900 shadow-[-18px_0_40px_rgba(15,23,42,0.18)] sm:w-[22rem]"
             role="dialog"
             aria-modal="true"
             aria-label="Mobile navigation menu"
+            onClick={(event) => event.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">Navigation</p>
-                <p className="text-sm font-semibold text-slate-800">Choose a page</p>
+              <div className="flex items-center gap-3">
+                <div className="relative h-10 w-10 overflow-hidden rounded-full bg-slate-100">
+                  <Image src="/erimuland%20logo.png" alt="Erimu Land Ltd logo" fill className="object-contain" />
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Erimu Land Ltd</p>
+                  <p className="text-sm font-semibold text-slate-800">Navigation</p>
+                </div>
               </div>
               <button
                 type="button"

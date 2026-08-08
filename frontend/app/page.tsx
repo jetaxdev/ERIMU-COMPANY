@@ -359,24 +359,21 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="mt-8 rounded-[1.5rem] border border-white/14 bg-slate-900/55 p-3 text-white shadow-[0_22px_55px_rgba(0,0,0,0.18)] backdrop-blur-md sm:mt-10 sm:rounded-[1.75rem] sm:p-5">
-            <div className="grid grid-cols-2 gap-3 sm:gap-5 xl:grid-cols-4">
-              {stats.map((stat, index) => {
+          <div className="mt-5 rounded-[1.5rem] border border-white/12 bg-slate-900/55 p-2 text-white shadow-[0_18px_40px_rgba(0,0,0,0.16)] backdrop-blur-md sm:mt-6 sm:p-3">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-2">
+              {stats.map((stat) => {
                 const Icon = stat.icon;
                 return (
-                  <div
-                    key={stat.label}
-                    className={`rounded-xl border border-white/12 bg-white/[0.03] p-3 text-center sm:rounded-none sm:border-0 sm:bg-transparent sm:p-0 sm:text-left ${index < stats.length - 1 ? 'xl:border-r xl:border-white/14 xl:pr-5' : ''}`}
-                  >
-                    <div className="flex flex-col items-center gap-2 sm:flex-row sm:items-start sm:gap-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-600 text-white shadow-[0_10px_24px_rgba(220,38,38,0.24)] sm:h-12 sm:w-12">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="text-[1.6rem] font-bold leading-none tracking-[-0.03em] sm:text-[2rem]">{stat.value}</p>
-                      <p className="mt-1 text-sm font-semibold sm:mt-2 sm:text-base">{stat.label}</p>
-                      <p className="mt-1 text-xs text-white/70 sm:text-sm">{stat.note}</p>
-                    </div>
+                  <div key={stat.label} className="rounded-2xl border border-white/10 bg-white/5 px-2 py-3">
+                    <div className="flex items-start gap-2">
+                      <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-2xl bg-red-600 text-white shadow-[0_8px_20px_rgba(220,38,38,0.22)]">
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-base font-semibold leading-none tracking-[-0.03em] text-white">{stat.value}</p>
+                        <p className="mt-1 text-[10px] uppercase tracking-[0.22em] text-white/80">{stat.label}</p>
+                        <p className="mt-0.5 text-[9px] leading-4 text-white/60">{stat.note}</p>
+                      </div>
                     </div>
                   </div>
                 );

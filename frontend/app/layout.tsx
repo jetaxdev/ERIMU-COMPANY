@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { FloatingWhatsAppButton } from '@/components/common/floating-whatsapp-button';
+import { ConditionalWhatsAppButton } from '@/components/common/conditional-whatsapp-button';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         {children}
-        <FloatingWhatsAppButton />
+        <ConditionalWhatsAppButton />
       </body>
     </html>
   );
