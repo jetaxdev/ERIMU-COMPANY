@@ -71,21 +71,37 @@ export function SiteFooter() {
           />
           <p className="mt-4 max-w-sm text-sm leading-7 text-slate-300">{companyAbout}</p>
 
-          {socialLinks.length > 0 ? (
-            <div className="mt-5 flex gap-3 text-slate-300">
-              {socialLinks.map((link) => (
-                <a
-                  key={`${link.platform}-${link.url}`}
-                  href={link.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold uppercase tracking-[0.14em] transition hover:text-white"
-                >
-                  {link.platform}
-                </a>
-              ))}
-            </div>
-          ) : null}
+          <div className="mt-5 flex gap-3 text-slate-300">
+            {socialLinks.map((link) => (
+              <a
+                key={`${link.platform}-${link.url}`}
+                href={link.url}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold uppercase tracking-[0.14em] transition hover:text-white"
+              >
+                {link.platform}
+              </a>
+            ))}
+
+            <a
+              href="https://www.tiktok.com/@erimulandltd"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold uppercase tracking-[0.14em] transition hover:text-white"
+            >
+              TikTok
+            </a>
+
+            <a
+              href="https://www.facebook.com/erimuventures"
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold uppercase tracking-[0.14em] transition hover:text-white"
+            >
+              Facebook
+            </a>
+          </div>
         </div>
 
         <div>
