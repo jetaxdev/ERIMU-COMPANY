@@ -59,88 +59,37 @@ export function SiteFooter() {
   );
 
   return (
-    <footer id="contact" className="bg-slate-950 px-4 py-16 text-white sm:px-6 lg:px-8">
-      <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.1fr_0.8fr_0.8fr_1fr]">
-        <div>
-          <Image
-            src="/erimuland%20logo.png"
-            alt={companyName}
-            width={150}
-            height={56}
-            className="h-14 w-auto object-contain brightness-0 invert"
-          />
-          <p className="mt-4 max-w-sm text-sm leading-7 text-slate-300">{companyAbout}</p>
+    <footer id="contact" className="bg-slate-950 px-4 py-12 text-white sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl flex-col items-center gap-4">
+        <Image
+          src="/erimuland%20logo.png"
+          alt={companyName}
+          width={150}
+          height={56}
+          className="h-12 w-auto object-contain brightness-0 invert"
+        />
 
-          {socialLinks.length > 0 ? (
-            <div className="mt-5 flex gap-3 text-slate-300">
-              {socialLinks.map((link) => (
-                <a
-                  key={`${link.platform}-${link.url}`}
-                  href={link.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold uppercase tracking-[0.14em] transition hover:text-white"
-                >
-                  {link.platform}
-                </a>
-              ))}
-            </div>
-          ) : null}
+        <div className="mt-2 flex items-center gap-5">
+          <a
+            href="https://www.tiktok.com/@erimulandltd"
+            target="_blank"
+            rel="noreferrer"
+            className="text-sm font-semibold text-slate-200 hover:text-white"
+          >
+            TikTok
+          </a>
+
+          <a
+            href="https://www.facebook.com/erimuventures"
+            target="_blank"
+            rel="noreferrer"
+            className="text-sm font-semibold text-slate-200 hover:text-white"
+          >
+            Facebook
+          </a>
         </div>
 
-        <div>
-          <h3 className="text-lg font-semibold">Quick Links</h3>
-          <ul className="mt-4 space-y-3 text-sm text-slate-300">
-            <li><Link href="/" className="transition hover:text-white">Home</Link></li>
-            <li><Link href="/properties" className="transition hover:text-white">Properties</Link></li>
-            <li><Link href="/about" className="transition hover:text-white">About Us</Link></li>
-            <li><Link href="/services" className="transition hover:text-white">Services</Link></li>
-            <li><Link href="/gallery" className="transition hover:text-white">Gallery</Link></li>
-            <li><Link href="/testimonials" className="transition hover:text-white">Testimonials</Link></li>
-            <li><Link href="/contact#contact-form" className="transition hover:text-white">Contact Us</Link></li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="text-lg font-semibold">Our Services</h3>
-          <ul className="mt-4 space-y-3 text-sm text-slate-300">
-            <li>Land Selling</li>
-            <li>Site Visits</li>
-            <li>Land Verification</li>
-            <li>Payment Plans</li>
-            <li>Title Processing</li>
-            <li>Customer Support</li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 className="text-lg font-semibold">Contact Information</h3>
-          <ul className="mt-4 space-y-4 text-sm text-slate-300">
-            <li>{companyAddress}</li>
-            <li>
-              {phones.map((phone) => (
-                <a key={phone} href={`tel:${phone.replace(/\s+/g, '')}`} className="block transition hover:text-white">
-                  {phone}
-                </a>
-              ))}
-            </li>
-            <li>
-              {emails.map((email) => (
-                <a key={email} href={`mailto:${email}`} className="block transition hover:text-white">
-                  {email}
-                </a>
-              ))}
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div className="mx-auto mt-12 flex max-w-7xl flex-col gap-3 border-t border-white/10 pt-6 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
-        <p>{`© ${new Date().getFullYear()} ${companyName}. All rights reserved.`}</p>
-        <div className="flex gap-4">
-          <Link href="/about" className="transition hover:text-white">About</Link>
-          <Link href="/contact#contact-form" className="transition hover:text-white">Get in Touch</Link>
-        </div>
+        <p className="mt-4 text-xs text-slate-400">{`© ${new Date().getFullYear()} ${companyName}. All rights reserved.`}</p>
       </div>
     </footer>
   );
