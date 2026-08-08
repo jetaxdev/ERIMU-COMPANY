@@ -352,7 +352,11 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="min-h-[160px] lg:min-h-[520px]" />
+            <div className="hidden lg:flex lg:items-center lg:justify-end lg:min-h-[520px]">
+              <div className="relative h-[420px] w-[420px] overflow-hidden rounded-[2rem]">
+                <Image src="/titlestamp.png" alt="Title deed stamp" fill className="object-contain" />
+              </div>
+            </div>
           </div>
 
           <div className="mt-8 rounded-[1.5rem] border border-white/14 bg-slate-900/55 p-3 text-white shadow-[0_22px_55px_rgba(0,0,0,0.18)] backdrop-blur-md sm:mt-10 sm:rounded-[1.75rem] sm:p-5">
