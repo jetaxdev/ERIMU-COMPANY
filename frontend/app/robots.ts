@@ -1,10 +1,7 @@
 import { siteUrl } from '@/lib/seo';
 
-export default function robots() {
-  const robotsText = `User-agent: *
-Allow: /
-Sitemap: ${siteUrl}/sitemap.xml
-`;
+export function GET() {
+  const robotsText = `User-agent: *\nAllow: /\nSitemap: ${siteUrl}/sitemap.xml\n`;
 
   return new Response(robotsText, {
     status: 200,
