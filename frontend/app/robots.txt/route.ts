@@ -1,6 +1,6 @@
 import { siteUrl } from '@/lib/seo';
 
-export function GET() {
+export async function GET() {
   const robotsText = `User-agent: *\nAllow: /\nSitemap: ${siteUrl}/sitemap.xml\n`;
 
   return new Response(robotsText, {
