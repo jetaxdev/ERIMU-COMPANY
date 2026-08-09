@@ -1,325 +1,85 @@
-'use client';
+                import type { Metadata } from 'next';
+                import { notFound } from 'next/navigation';
+                import PropertyDetailPage from '@/components/property/property-detail-page';
+                import { fetchPropertyBySlug, fetchPropertySlugs } from '@/lib/api-server';
+                import { siteUrl, siteName, socialImage } from '@/lib/seo';
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
-import { CalendarDays, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
-import { ContactTickerBar } from '@/components/layout/contact-ticker-bar';
-import { MobileNavMenu } from '@/components/layout/mobile-nav-menu';
-import { getProperties, getPropertyBySlug, PropertyRecord, PropertyStatus } from '@/services/api/properties';
-import { createSiteVisit } from '@/services/api/site-visits';
+                type Props = { params: { slug: string } };
 
-const heroImage =
-  'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80';
+                export async function generateStaticParams() {
+                  const slugs = await fetchPropertySlugs();
+                  return slugs.map((s) => ({ slug: s }));
+                }
 
-type DetailPageProps = {
-  params: {
-    slug: string;
-  };
-};
-
-function formatKES(price?: number | null) {
-  if (!price) return 'Contact for price';
-  return `KES ${new Intl.NumberFormat('en-KE').format(price)}`;
-}
-
-function pretty(text: string) {
-  return text
-    .toLowerCase()
-    .split('_')
-    .map((item) => item.charAt(0).toUpperCase() + item.slice(1))
-    .join(' ');
-}
-
-function statusClass(status: PropertyStatus) {
-  switch (status) {
-    case 'AVAILABLE':
-      return 'bg-blue-600';
-    case 'RESERVED':
-      return 'bg-orange-500';
-    case 'SOLD':
-      return 'bg-red-500';
-    default:
-      return 'bg-slate-700';
-  }
-}
-
-function deriveSize(property: PropertyRecord) {
-  if (property.plotSize?.trim()) return property.plotSize;
-  if (property.areaSqft) return `${property.areaSqft} sqft`;
-  return 'Size on request';
-}
-
-function pickImage(property: PropertyRecord) {
-  const featured = property.featuredImageId
-    ? property.images.find((image) => image.id === property.featuredImageId)?.url
-    : undefined;
-
-  return featured || property.images[0]?.url || heroImage;
-}
-
-export default function PropertyDetailPage({ params }: DetailPageProps) {
-  const [property, setProperty] = useState<PropertyRecord | null>(null);
-  const [suggested, setSuggested] = useState<PropertyRecord[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [activeImage, setActiveImage] = useState('');
-  const [showVisitForm, setShowVisitForm] = useState(false);
-  const [submittingVisit, setSubmittingVisit] = useState(false);
-  const [visitFeedback, setVisitFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
-  const [visitForm, setVisitForm] = useState({
-    fullName: '',
-    phone: '',
-    email: '',
-    visitDate: '',
-  });
-
-  useEffect(() => {
-    let mounted = true;
-
-    async function load() {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const result = await getPropertyBySlug(params.slug);
-
-        if (!mounted) {
-          return;
-        }
-
-        setProperty(result);
-        setActiveImage(pickImage(result));
-
-        const list = await getProperties({ limit: 8, page: 1 });
-        if (!mounted) {
-          return;
-        }
-
-        setSuggested(list.data.filter((item) => item.id !== result.id).slice(0, 4));
-      } catch {
-        if (!mounted) {
-          return;
-        }
-
-        setError('Property details are unavailable right now.');
-      } finally {
-        if (mounted) {
-          setLoading(false);
-        }
-      }
-    }
-
-    load();
-
-    return () => {
-      mounted = false;
-    };
-  }, [params.slug]);
-
-  const gallery = useMemo(() => {
-    if (!property) return [];
-
-    const featured = pickImage(property);
-    const rest = property.images.map((item) => item.url).filter((url) => url && url !== featured);
-    return [featured, ...rest].slice(0, 8);
-  }, [property]);
-
-  if (loading) {
-    return (
-      <main className="min-h-screen bg-slate-50 px-4 py-10 text-slate-700 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-2xl border border-slate-200 bg-white p-10 text-center">
-          Loading property details...
-        </div>
-      </main>
-    );
-  }
-
-  if (error || !property) {
-    return (
-      <main className="min-h-screen bg-slate-50 px-4 py-10 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-2xl border border-red-200 bg-red-50 p-10 text-center text-red-700">
-          <p>{error || 'Property not found.'}</p>
-          <Link href="/properties" className="mt-4 inline-flex rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white">
-            Back to Properties
-          </Link>
-        </div>
-      </main>
-    );
-  }
-
-  const plotSize = deriveSize(property);
-  const location = property.location || property.town || property.county || 'Prime Location';
-  const amenities = property.amenities.map((item) => pretty(item.name));
-
-  return (
-    <main className="bg-white text-slate-900">
-      <header className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/95 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6 sm:py-3 lg:px-8">
-          <Link href="/" className="flex items-center gap-3">
-            <Image
-              src="/erimuland%20logo.png"
-              alt="Erimu Land Ltd"
-              width={140}
-              height={48}
-              className="h-10 w-auto object-contain sm:h-12"
-              priority
-            />
-          </Link>
-
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-slate-700 lg:flex">
-            <Link href="/" className="transition hover:text-red-600">Home</Link>
-            <Link href="/properties" className="text-red-600">Properties</Link>
-            <Link href="/about" className="transition hover:text-red-600">About Us</Link>
-            <Link href="/services" className="transition hover:text-red-600">Services</Link>
-            <Link href="/gallery" className="transition hover:text-red-600">Gallery</Link>
-            <Link href="/testimonials" className="transition hover:text-red-600">Testimonials</Link>
-            <Link href="/contact" className="transition hover:text-red-600">Contact Us</Link>
-          </nav>
-
-          <Link
-            href="/contact"
-            className="hidden items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700 sm:inline-flex"
-          >
-            <CalendarDays className="h-4 w-4" />
-            Book Site Visit
-          </Link>
-          <MobileNavMenu currentPath="/properties" />
-        </div>
-      </header>
-
-      <ContactTickerBar />
-
-      <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <div className="mb-4 flex items-center gap-2 text-sm text-slate-500">
-          <Link href="/" className="hover:text-red-600">Home</Link>
-          <span>›</span>
-          <Link href="/properties" className="hover:text-red-600">Properties</Link>
-          <span>›</span>
-          <span className="text-red-600">{property.title}</span>
-        </div>
-
-        <div className="grid gap-5 lg:grid-cols-[1.55fr_0.95fr]">
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <div className="relative h-[270px] overflow-hidden rounded-xl bg-slate-100 sm:h-[460px]">
-              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${activeImage || pickImage(property)})` }} />
-              <button
-                type="button"
-                onClick={() => {
-                  const index = gallery.indexOf(activeImage);
-                  const next = index <= 0 ? gallery.length - 1 : index - 1;
-                  setActiveImage(gallery[next] || activeImage);
-                }}
-                className="absolute left-3 top-1/2 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white text-slate-700 shadow"
-              >
-                <ChevronLeft className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  const index = gallery.indexOf(activeImage);
-                  const next = index >= gallery.length - 1 ? 0 : index + 1;
-                  setActiveImage(gallery[next] || activeImage);
-                }}
-                className="absolute right-3 top-1/2 inline-flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white text-slate-700 shadow"
-              >
-                <ChevronRight className="h-4 w-4" />
-              </button>
-            </div>
-
-            <div className="mt-3 grid grid-cols-3 gap-2 sm:grid-cols-6">
-              {gallery.map((url) => (
-                <button
-                  key={url}
-                  type="button"
-                  onClick={() => setActiveImage(url)}
-                  className={`h-16 overflow-hidden rounded-lg border ${activeImage === url ? 'border-red-500' : 'border-slate-200'}`}
-                >
-                  <div className="h-full w-full bg-cover bg-center" style={{ backgroundImage: `url(${url})` }} />
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <aside className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <span className={`inline-flex rounded-md px-2 py-1 text-xs font-bold text-white ${statusClass(property.status)}`}>
-              {pretty(property.status)}
-            </span>
-            <h1 className="mt-3 text-[2.05rem] font-bold tracking-[-0.03em] text-slate-900 sm:text-4xl">{property.title}</h1>
-            <p className="mt-2 inline-flex items-center gap-2 text-sm text-slate-500">
-              <MapPin className="h-4 w-4" />
-              {location}
-            </p>
-
-            <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Starting From</p>
-              <p className="mt-1 text-3xl font-bold text-red-600 sm:text-4xl">{formatKES(property.price)}</p>
-              <div className="mt-4 grid grid-cols-1 gap-3 text-sm sm:grid-cols-2 sm:gap-4">
-                <div>
-                  <p className="text-slate-500">Plot Size</p>
-                  <p className="font-semibold text-slate-800">{plotSize}</p>
-                </div>
-                <div>
-                  <p className="text-slate-500">Property Code</p>
-                  <p className="font-semibold text-slate-800">{property.slug.toUpperCase()}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-5 space-y-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setVisitFeedback(null);
-                  if (!visitForm.visitDate) {
-                    const suggestedDate = new Date(Date.now() + 24 * 60 * 60 * 1000);
-                    const localValue = new Date(suggestedDate.getTime() - suggestedDate.getTimezoneOffset() * 60000)
-                      .toISOString()
-                      .slice(0, 10);
-
-                    setVisitForm((prev) => ({ ...prev, visitDate: localValue }));
+                export async function generateMetadata({ params }: Props): Promise<Metadata> {
+                  const slug = params.slug;
+                  const property = await fetchPropertyBySlug(slug);
+                  if (!property) {
+                    return {
+                      title: `Property not found | ${siteName}`,
+                    };
                   }
-                  setShowVisitForm(true);
-                }}
-                className="inline-flex w-full items-center justify-center rounded-md bg-red-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-red-700"
-              >
-                Book Site Visit
-              </button>
-              <a
-                href={`https://wa.me/254798426336?text=${encodeURIComponent(`Hello, I am interested in ${property.title}`)}`}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex w-full items-center justify-center rounded-md border border-emerald-400 px-4 py-3 text-sm font-semibold text-emerald-700 transition hover:bg-emerald-50"
-              >
-                WhatsApp Us
-              </a>
-            </div>
-          </aside>
-        </div>
-      </section>
 
-      {showVisitForm ? (
-        <div className="fixed inset-0 z-[80] flex items-center justify-center bg-slate-950/55 px-4 py-6">
-          <div className="w-full max-w-md rounded-2xl bg-white p-5 shadow-[0_24px_60px_rgba(15,23,42,0.28)]">
-            <div className="mb-4 flex items-start justify-between gap-3">
-              <div>
-                <h3 className="text-lg font-semibold text-slate-900">Book Site Visit</h3>
-                <p className="text-sm text-slate-600">{property.title}</p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowVisitForm(false)}
-                className="rounded-md border border-slate-200 px-2.5 py-1 text-xs font-semibold text-slate-600 hover:bg-slate-50"
-              >
-                Close
-              </button>
-            </div>
+                  const title = `${property.title} | ${siteName}`;
+                  const description = property.description || `Buy land: ${property.title} in ${property.location || property.town || property.county || 'Kirinyaga'}.`;
+                  const url = `${siteUrl}/properties/${property.slug}`;
+                  const image = property.images?.[0]?.url || socialImage;
 
-            <form
-              className="space-y-3"
-              onSubmit={async (event) => {
-                event.preventDefault();
-                setVisitFeedback(null);
+                  return {
+                    title,
+                    description,
+                    metadataBase: new URL(siteUrl),
+                    alternates: { canonical: url },
+                    openGraph: {
+                      title,
+                      description,
+                      url,
+                      siteName,
+                      type: 'website',
+                      images: [{ url: image }],
+                    },
+                    twitter: {
+                      card: 'summary_large_image',
+                      title,
+                      description,
+                      images: [image],
+                    },
+                  };
+                }
+
+                export default async function PropertyPage({ params }: Props) {
+                  const property = await fetchPropertyBySlug(params.slug);
+                  if (!property) return notFound();
+
+                  const price = property.price ? String(property.price) : undefined;
+                  const availability = property.status === 'AVAILABLE' ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut';
+
+                  const ld = {
+                    '@context': 'https://schema.org',
+                    '@type': 'Product',
+                    name: property.title,
+                    description: property.description || undefined,
+                    url: `${siteUrl}/properties/${property.slug}`,
+                    image: property.images?.map((i) => i.url) || [socialImage],
+                    sku: property.slug,
+                    offers: {
+                      '@type': 'Offer',
+                      price: price,
+                      priceCurrency: 'KES',
+                      availability,
+                      url: `${siteUrl}/properties/${property.slug}`,
+                      seller: { '@type': 'Organization', name: siteName },
+                    },
+                  };
+
+                  return (
+                    <>
+                      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+                      <PropertyDetailPage property={property} />
+                    </>
+                  );
+                }
+
                 setSubmittingVisit(true);
 
                 try {

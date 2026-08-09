@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
+import { siteUrl } from '@/lib/seo';
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') || 'https://erimuproperties.com';
+const baseUrl = siteUrl;
 const backendUrl = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '') || 'http://localhost:3001';
 
 async function fetchPropertySlugs() {
