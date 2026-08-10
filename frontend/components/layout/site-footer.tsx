@@ -53,9 +53,42 @@ export function SiteFooter() {
     return values && values.length > 0 ? values : fallbackEmails;
   }, [company?.emails]);
 
-  const socialLinks = useMemo(
-    () => company?.socialLinks?.filter((item) => item.url?.trim()).slice(0, 4) ?? [],
-    [company?.socialLinks],
+  const socialLinks = useMemo(() => {
+    const links = company?.socialLinks?.filter((item) => item.url?.trim()) ?? [];
+    const seen = new Set<string>();
+
+    return links
+      .filter((item) => {
+        const platform = item.platform?.trim() ?? '';
+        const url = item.url?.trim() ?? '';
+
+        if (/instagram/i.test(platform) || /instagram/i.test(url)) {
+          return false;
+        }
+
+        if (/facebook/i.test(platform) || /facebook/i.test(url)) {
+          if (seen.has('facebook')) {
+            return false;
+          }
+
+          seen.add('facebook');
+          return true;
+        }
+
+        const key = `${platform.toLowerCase()}:${url}`;
+        if (seen.has(key)) {
+          return false;
+        }
+
+        seen.add(key);
+        return true;
+      })
+      .slice(0, 4);
+  }, [company?.socialLinks]);
+
+  const hasFacebookLink = useMemo(
+    () => socialLinks.some((link) => /facebook/i.test(link.platform || link.url || '')),
+    [socialLinks],
   );
 
   return (
@@ -93,14 +126,16 @@ export function SiteFooter() {
               TikTok
             </a>
 
-            <a
-              href="https://www.facebook.com/erimuventures"
-              target="_blank"
-              rel="noreferrer"
-              className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold uppercase tracking-[0.14em] transition hover:text-white"
-            >
-              Facebook
-            </a>
+            {!hasFacebookLink && (
+              <a
+                href="https://www.facebook.com/erimuventures"
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold uppercase tracking-[0.14em] transition hover:text-white"
+              >
+                Facebook
+              </a>
+            )}
           </div>
         </div>
 
